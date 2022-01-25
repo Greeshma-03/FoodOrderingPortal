@@ -33,9 +33,6 @@ const Navbar = () => {
           <Button color="inherit" onClick={onsubmit}>
             Register
           </Button>
-          <Button color="inherit" onClick={() => navigate("/profile")}>
-            My Profile
-          </Button>
           <Button color="inherit" onClick={()=> navigate("/login")}>
             Login
           </Button>

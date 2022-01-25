@@ -20,6 +20,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { useNavigate } from "react-router-dom";
+import Navbar from "../templates/Navbar";
 
 import BReg from "./Bregister";
 import VReg from "./Vregister";
@@ -27,9 +28,7 @@ import VReg from "./Vregister";
 
 const Register = (props) => {
     // const navigate = useNavigate();
-    
     const [check, setcheck] = useState("0");
-  
     const onsubmitb = (event) => {
         setcheck("1");
     };
@@ -46,45 +45,48 @@ const Register = (props) => {
     };
 
     return (
-        <div container align={"center"}>
-            {check === "0" && <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-            >
-
-                <ListItemButton onClick={handleClick}>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Choose User" />
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
-                            <ListItemIcon>
-                                <StarBorder />
-                            </ListItemIcon>
-                            <ListItemText primary="Buyer" onClick={onsubmitb} />
-                        </ListItemButton>
-                    </List>
-                </Collapse>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
-                            <ListItemIcon>
-                                <StarBorder />
-                            </ListItemIcon>
-                            <ListItemText primary="Vendor" onClick={onsubmitv} />
-                        </ListItemButton>
-                    </List>
-                </Collapse>
-            </List>
-            }
-            {check === "1" && <BReg/>}
-            {check === "2" && <VReg/>}
-
+        <div>
+            <Navbar />
+            <div className="container">
+            </div>
+            <div container align={"center"}>
+                {check === "0" && <List
+                    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                >
+                    <ListItemButton onClick={handleClick}>
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Choose User" />
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemIcon>
+                                    <StarBorder />
+                                </ListItemIcon>
+                                <ListItemText primary="Buyer" onClick={onsubmitb} />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemIcon>
+                                    <StarBorder />
+                                </ListItemIcon>
+                                <ListItemText primary="Vendor" onClick={onsubmitv} />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+                </List>
+                }
+                {check === "1" && <BReg />}
+                {check === "2" && <VReg />}
+            </div>
         </div>
     );
 };

@@ -11,32 +11,24 @@ const BuyerNavbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ cursor: "pointer" }}
-            onClick={() => navigate("/")}
-          >
-            Canteen Portal
-          </Typography>
+        <Toolbar>          
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={() => navigate("/Profile")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Profile")}>
             Profile
           </Button>
-          <Button color="inherit" onClick={() => navigate("/Search_bar")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Search_bar")}>
             Search food Items
           </Button>
-          <Button color="inherit" onClick={() => navigate("/Favourites")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Favourites")}>
             Favourites
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/Food_items")}>
+          <Button color="inherit" onClick={()=> navigate("/buyer/Food_items")}>
             Food Items
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/Order")}>
+          <Button color="inherit" onClick={()=> navigate("/buyer/Order")}>
             Order Items
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/Wallet")}>
+          <Button color="inherit" onClick={()=> navigate("/buyer/Wallet")}>
             Wallet
           </Button>
         </Toolbar>

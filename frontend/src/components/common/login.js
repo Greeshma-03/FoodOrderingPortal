@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../templates/Navbar";
 
 const Login = (props) => {
    const navigate = useNavigate();
@@ -43,20 +44,29 @@ const Login = (props) => {
           alert("Register first!!");
            }
           else if(response.data.val===1){
+            localStorage.setItem("username",name);
+            localStorage.setItem("useremail",email);
+            localStorage.setItem("log","in");
+            
             navigate("/buyer");
+
            }
           else if(response.data.val===2){
+            localStorage.setItem("log","in");
             navigate("/vendor");
-          } 
-          else{
-            alert("wtf!!");
-          }
+
+          }           
         });
   
       resetInputs();
     };
-  
-    return (
+    
+    
+    return ( 
+      <div>
+        <Navbar />
+        <div className="container">
+        </div>
       <Grid container align={"center"} spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -80,6 +90,8 @@ const Login = (props) => {
           </Button>
         </Grid>
       </Grid>
+      </div>    
+
     );
   };
   
