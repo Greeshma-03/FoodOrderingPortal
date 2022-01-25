@@ -7,10 +7,12 @@ import Register from "./components/common/Register";
 import Navbar from "./components/templates/Navbar";
 import Profile from "./components/users/Profile";
 import Login from "./components/common/login";
-import Buyer from "./components/users/Buyer";
 import BReg from "./components/common/Bregister";
 import VReg from "./components/common/Vregister";
-import Vendor from "./components/users/Vendor";
+import BProfile from "./components/users/Buyer/Profile";
+import Buyer from "./components/users/Buyer/Buyer"
+import Vendor from "./components/users/Vendor/Vendor";
+import Logout from "./components/users/Buyer/logout";
 
 const Layout = () => {
 
@@ -29,17 +31,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="users" element={<UsersList />} />
-          <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="login" element={<Login/>}/>
-          <Route path="buyer" element={<Buyer/>}/>
-          <Route path="vendor" element={<Vendor/>} />
-          <Route path="bregister" element={<BReg/>}/>
-          <Route path="vregister" element={<VReg/>}/>
-          
-        
+        <Route path="/" element={<Home />} />
+        <Route path="users" element={<UsersList />} />
+        <Route path="register" element={<Register />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="login" element={<Login />} />
+        <Route path="vendor" element={<Vendor />} />
+        <Route path="bregister" element={<BReg />} />
+        <Route path="vregister" element={<VReg />} />
+
+        <Route path="/buyer" element={<Buyer />} />
+        <Route path="/buyer/profile" element={<BProfile />} />
+        <Route path="/buyer/logout" element={<Logout />} />
+
       </Routes>
     </BrowserRouter>
   );

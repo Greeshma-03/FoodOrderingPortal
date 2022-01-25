@@ -11,7 +11,15 @@ const BuyerNavbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>          
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate("/buyer")}
+          >
+            Home
+          </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={() => navigate("/buyer/Profile")}>
             Profile
@@ -22,14 +30,17 @@ const BuyerNavbar = () => {
           <Button color="inherit" onClick={() => navigate("/buyer/Favourites")}>
             Favourites
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Food_items")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Food_items")}>
             Food Items
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Order")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Order")}>
             Order Items
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Wallet")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/Wallet")}>
             Wallet
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/buyer/logout")}>
+            Logout
           </Button>
         </Toolbar>
       </AppBar>
