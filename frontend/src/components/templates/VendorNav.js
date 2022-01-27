@@ -25,7 +25,7 @@ const VendorNavbar = () => {
             Profile
           </Button>
           <Button color="inherit" onClick={() => navigate("/vendor/menu")}>
-            Food Menu
+            Food-Menu
           </Button>
           <Button color="inherit" onClick={() => navigate("/vendor/orders")}>
             Orders

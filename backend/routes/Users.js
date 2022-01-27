@@ -4,6 +4,7 @@ var router = express.Router();
 // Load User model
 const Buyer = require("../models/Buyer")
 const Vendor = require("../models/Vendor");
+const Food = require("../models/FoodItems");
 
 // GET request 
 // Getting all the users
@@ -104,6 +105,7 @@ router.post("/bregister", (req, res) => {
 router.post("/vregister", (req, res) => {
 
     const email = req.body.email;
+    const shop = req.body.shop;
     console.log(req.body)//just verfying the things
     // Find user by email
     let response = {
@@ -119,25 +121,35 @@ router.post("/vregister", (req, res) => {
             res.status(200).json(response);
         }
         else {
-            response.val = 1;
-            const newUser = new Vendor({
-                name: req.body.name,
-                shop: req.body.shop,
-                email: req.body.email,
-                contactno: req.body.contactno,
-                canteenopen: req.body.canteenopen,
-                canteenclose: req.body.canteenclose,
-                password: req.body.password
-            });
-
-            newUser.save()
-                .then(user => {
+            Vendor.findOne({ shop: shop }).then(uuser => {
+                if (uuser) {
+                    response.val = 0;
                     response.name = req.body.name;
                     res.status(200).json(response);
-                })
-                .catch(err => {
-                    res.status(400).send(err);
-                });
+                }
+                else {
+                    response.val = 1;
+                    const newUser = new Vendor({
+                        name: req.body.name,
+                        shop: req.body.shop,
+                        email: req.body.email,
+                        contactno: req.body.contactno,
+                        canteenopen: req.body.canteenopen,
+                        canteenclose: req.body.canteenclose,
+                        password: req.body.password
+                    });
+
+                    newUser.save()
+                        .then(user => {
+                            response.name = req.body.name;
+                            res.status(200).json(response);
+                        })
+                        .catch(err => {
+                            res.status(400).send(err);
+                        });
+                }
+            });
+
         }
     });
 });
@@ -178,11 +190,11 @@ router.post("/bedit", (req, res) => {
             user.contact = req.body.contact;
             user.password = req.body.password;
             user.save()
-            response.val=1;
+            response.val = 1;
         }
         else {
             //failure
-            response.val=0;
+            response.val = 0;
         }
     });
 });
@@ -199,17 +211,111 @@ router.post("/vedit", (req, res) => {
             user.shop = req.body.shop;
             user.canteenclose = req.body.close;
             user.canteenopen = req.body.open;
-            user.password=req.body.password
+            user.password = req.body.password
             user.save()
-            response.val=1;
+            response.val = 1;
         }
         else {
             //failure
-            response.val=0;
+            response.val = 0;
         }
     });
 });
 
+
+router.post("/additem", (req, res) => {
+    const email = req.body.email;
+    const name = req.body.name;
+
+    console.log(req.body)//just verfying the things
+    // Find user by email
+    let response = {
+        val: "",
+        name: ""
+    };
+    Food.findOne({ email: email, name: name }).then(user => {
+        // Check if the same item is added by the vendor
+        if (user) {
+            response.val = 0;
+            response.name = req.body.name;
+            res.status(200).json(response);
+        }
+        else {
+            response.val = 1;
+            const newUser = new Food({
+                name: req.body.name,
+                price: req.body.price,
+                rating: 0,
+                veg: req.body.type,
+                email: req.body.email
+            });
+
+            newUser.save()
+                .then(user => {
+                    response.name = req.body.name;
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    res.status(400).send(err);
+                });
+        }
+    });
+});
+
+router.post("/items", function (req, res) {
+    const email = req.body.email;
+    Food.find({email:email},function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+router.post("/delitem",function(req,res){
+    const id=req.body.id;
+    let response={
+        val:""
+    }
+    Food.findByIdAndDelete(id,function (err, users) {
+        if (err) {
+            response.val=0;
+            console.log(err);
+        } else {
+            response.val=1;
+            res.json(response);
+        }
+    })
+
+});
+
+router.post("/edititem",function(req,res){
+    const id=req.body.id;
+    const name=req.body.name;
+    const price=req.body.price;
+    const rating=req.body.rating;
+    const veg=req.body.veg;
+
+
+    let response={
+        val:""
+    }
+    Food.findByIdAndUpdate(id,function (err, users) {
+        if (err) {
+            response.val=0;
+            console.log(err);
+        } else {
+            users.name=name;
+            users.price=price;
+            users.rating=rating;
+            users.veg=veg;
+            response.val=1;
+            res.json(response);
+        }
+    })
+
+});
 
 module.exports = router;
 

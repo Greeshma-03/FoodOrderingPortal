@@ -15,6 +15,8 @@ import Vendor from "./components/users/Vendor/Vendor";
 import BLogout from "./components/users/Buyer/logout";
 import VLogout from "./components/users/Vendor/logout";
 import Vprofile from "./components/users/Vendor/Profile";
+import FoodItems from "./components/users/Vendor/FoodItems";
+import AddItem from "./components/users/Vendor/Itemreg";
 
 const Layout = () => {
 
@@ -46,10 +48,11 @@ function App() {
         <Route path="/buyer/profile" element={<BProfile />} />
         <Route path="/buyer/logout" element={<BLogout />} />
 
-        <Route path="/vendor" element={<Vendor/>}/>
+        <Route path="/vendor" element={<Vendor />} />
         <Route path="/vendor/logout" element={<VLogout />} />
-        <Route path="/vendor/proofile" element={<Vprofile/>} />
- 
+        <Route path="/vendor/proofile" element={<Vprofile />} />
+        <Route path="/vendor/menu" element={<FoodItems />} />
+        <Route path="/vendor/additem" element={<AddItem />} />
       </Routes>
     </BrowserRouter>
   );
