@@ -26,7 +26,12 @@ const FoodItems = (props) => {
     const [searchText, setSearchText] = useState("");
     const [email, setemail] = useState(localStorage.getItem("useremail"));
     const [edit, setedit] = useState("0");
-    const [index,setindex]=useState("");
+    const [index, setindex] = useState(-1);
+
+    const [name, setname] = useState("");
+    const [price, setprice] = useState("");
+    const [rating, setrating] = useState("");
+    const [veg, setveg] = useState("");
 
     useEffect(() => {
 
@@ -46,28 +51,35 @@ const FoodItems = (props) => {
             });
     }, []);
 
-    const onSubmitedit = (id) => {
-        console.log(id)
+    const onSubmitedit = (index, ID) => {
+        console.log(index)
+        setedit("1");
+        setindex(index);
         const newuser = {
-            id: id,
-            name: name,
-            price: price,
-            rating: rating,
-            veg: veg
+            id: ID
         };
         axios
-            .post("http://localhost:4000/user/edititem", newuser)
+            .post("http://localhost:4000/user/foodbyid", newuser)
             .then(response => {
-                if (response.data.val == 1)
-                    alert("Edited Successfully!!");
-                else {
-                    alert("Failed to Edit!!");
-                }
+                setname(response.data.name);
+                setveg(response.data.veg);
+                setprice(response.data.price);
             })
             .catch((error) => {
                 console.log(error);
             });
+    };
 
+    const onChangename = (event) => {
+        setname(event.target.value);
+    };
+
+    const onChangeprice = (event) => {
+        setprice(event.target.value);
+    };
+
+    const onChangeveg = (event) => {
+        setveg(event.target.value);
     };
 
     const onSubmitdel = (id) => {
@@ -88,6 +100,39 @@ const FoodItems = (props) => {
             });
         window.location.reload(false);
 
+    };
+
+    const onSubmitcancel = () => {
+        setindex(-1);
+        setedit("0");
+    };
+
+    const onSubmitsave = (Id) => {
+        setindex(-1);
+        setedit("0");
+        window.location.reload(false);
+        const newuser = {
+            id: Id,
+            name: name,
+            price: price,
+            veg: veg,
+            email:email
+        };
+
+        console.log(newuser);
+
+        axios
+            .post("http://localhost:4000/user/edititem", newuser)
+            .then(response => {
+                if (response.data.val === 1)
+                    alert("Edited Successfully!!");
+                else {
+                    alert("Failed to Edit!!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -118,52 +163,47 @@ const FoodItems = (props) => {
                                     {users.map((user, ind) => (
 
                                         <TableRow key={ind}>
-                                            <div container align={"center"}>
-                                                {edit === "0" &&
-                                                    <div>
-                                                        <TableCell>{ind + 1}</TableCell>
-                                                        <TableCell>{user.name}</TableCell>
-                                                        <TableCell>{user.price}</TableCell>
-                                                        <TableCell>{user.rating}</TableCell>
-                                                        <TableCell>{user.veg}</TableCell>
-                                                        <TableCell><Grid item xs={12}>
-                                                            <Button variant="contained" onClick={() => onSubmitedit(user._id)}>
-                                                                Edit
+                                            {edit === "1" && index === ind ?
+                                                <>
+                                                    <TableCell>{ind + 1}</TableCell>
+                                                    <TableCell> <input value={name} onChange={onChangename} /></TableCell>
+                                                    <TableCell><input value={price} onChange={onChangeprice} /></TableCell>
+                                                    <TableCell>{user.rating}</TableCell>
+                                                    <TableCell><input value={veg} onChange={onChangeveg} /></TableCell>
+                                                    <TableCell><Grid item xs={12}>
+                                                        <Button variant="contained" onClick={() => onSubmitsave(user._id)}>
+                                                            Save
+                                                        </Button>
+                                                    </Grid></TableCell>
+                                                    <TableCell>
+                                                        <Grid item xs={12}>
+                                                            <Button variant="contained" onClick={onSubmitcancel}>
+                                                                Cancel
                                                             </Button>
-                                                        </Grid></TableCell>
-                                                        <TableCell>
-                                                            <Grid item xs={12}>
-                                                                <Button variant="contained" onClick={() => onSubmitdel(user._id)}>
-                                                                    Delete
-                                                                </Button>
-                                                            </Grid>
-                                                        </TableCell>
-                                                    </div>
-
-                                                }
-
-                                                {edit === "1" &&
-                                                    <div>
-                                                        <TableCell>{ind + 1}</TableCell>
-                                                        <TableCell>{user.name}</TableCell>
-                                                        <TableCell>{user.price}</TableCell>
-                                                        <TableCell>{user.rating}</TableCell>
-                                                        <TableCell>{user.veg}</TableCell>
-                                                        <TableCell><Grid item xs={12}>
-                                                            <Button variant="contained" onClick={() => onSubmitedit(user._id)}>
-                                                                Save
+                                                        </Grid>
+                                                    </TableCell>
+                                                </>
+                                                :
+                                                <>
+                                                    <TableCell>{ind + 1}</TableCell>
+                                                    <TableCell>{user.name}</TableCell>
+                                                    <TableCell>{user.price}</TableCell>
+                                                    <TableCell>{user.rating}</TableCell>
+                                                    <TableCell>{user.veg}</TableCell>
+                                                    <TableCell><Grid item xs={12}>
+                                                        <Button variant="contained" onClick={() => onSubmitedit(ind, user._id)}>
+                                                            Edit
+                                                        </Button>
+                                                    </Grid></TableCell>
+                                                    <TableCell>
+                                                        <Grid item xs={12}>
+                                                            <Button variant="contained" onClick={() => onSubmitdel(user._id)}>
+                                                                Delete
                                                             </Button>
-                                                        </Grid></TableCell>
-                                                        <TableCell>
-                                                            <Grid item xs={12}>
-                                                                <Button variant="contained" onClick={() => onSubmitdel(user._id)}>
-                                                                    Delete
-                                                                </Button>
-                                                            </Grid>
-                                                        </TableCell>
-                                                    </div>
-                                                }
-                                            </div>
+                                                        </Grid>
+                                                    </TableCell>
+                                                </>
+                                            }
                                         </TableRow>
                                     ))}
                                 </TableBody>

@@ -67,16 +67,6 @@ const BProfile = () => {
 
 
 
-
-    // const resetInputs = () => {
-    //     setname(name);
-    //     setemail(email);
-    //     setcontact(contact);
-    //     setage(age);
-    //     setbatch(batch);
-    //     setpw(pw);
-    // };
-
     const onSubmit = (event) => {
         event.preventDefault();
 

@@ -273,6 +273,17 @@ router.post("/items", function (req, res) {
     })
 });
 
+router.post("/foodbyid", function (req, res) {
+    const id=req.body.id;
+    Food.findById(id,function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
 router.post("/delitem",function(req,res){
     const id=req.body.id;
     let response={
@@ -294,23 +305,26 @@ router.post("/edititem",function(req,res){
     const id=req.body.id;
     const name=req.body.name;
     const price=req.body.price;
-    const rating=req.body.rating;
     const veg=req.body.veg;
-
+    
+    console.log("redirection error..?");
 
     let response={
         val:""
     }
-    Food.findByIdAndUpdate(id,function (err, users) {
+    Food.findById(id,function (err, users) {
         if (err) {
             response.val=0;
+            console.log("helllllooooo");
             console.log(err);
         } else {
+            console.log(users);
             users.name=name;
             users.price=price;
-            users.rating=rating;
             users.veg=veg;
+            users.save();
             response.val=1;
+            console.log(response);
             res.json(response);
         }
     })
