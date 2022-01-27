@@ -11,25 +11,30 @@ const VendorNavbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>          
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate("/vendor")}
+          >
+            Home
+          </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={() => navigate("/buyer/Profile")}>
+          <Button color="inherit" onClick={() => navigate("/vendor/proofile")}>
             Profile
           </Button>
-          <Button color="inherit" onClick={() => navigate("/buyer/Search_bar")}>
-            Search food Items
+          <Button color="inherit" onClick={() => navigate("/vendor/menu")}>
+            Food Menu
           </Button>
-          <Button color="inherit" onClick={() => navigate("/buyer/Favourites")}>
-            Favourites
+          <Button color="inherit" onClick={() => navigate("/vendor/orders")}>
+            Orders
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Food_items")}>
-            Food Items
+          <Button color="inherit" onClick={() => navigate("/vendor/statistics")}>
+            Staticistic Page
           </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Order")}>
-            Order Items
-          </Button>
-          <Button color="inherit" onClick={()=> navigate("/buyer/Wallet")}>
-            Wallet
+          <Button color="inherit" onClick={() => navigate("/vendor/logout")}>
+            Logout
           </Button>
         </Toolbar>
       </AppBar>

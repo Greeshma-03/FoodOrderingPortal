@@ -12,7 +12,9 @@ import VReg from "./components/common/Vregister";
 import BProfile from "./components/users/Buyer/Profile";
 import Buyer from "./components/users/Buyer/Buyer"
 import Vendor from "./components/users/Vendor/Vendor";
-import Logout from "./components/users/Buyer/logout";
+import BLogout from "./components/users/Buyer/logout";
+import VLogout from "./components/users/Vendor/logout";
+import Vprofile from "./components/users/Vendor/Profile";
 
 const Layout = () => {
 
@@ -42,8 +44,12 @@ function App() {
 
         <Route path="/buyer" element={<Buyer />} />
         <Route path="/buyer/profile" element={<BProfile />} />
-        <Route path="/buyer/logout" element={<Logout />} />
+        <Route path="/buyer/logout" element={<BLogout />} />
 
+        <Route path="/vendor" element={<Vendor/>}/>
+        <Route path="/vendor/logout" element={<VLogout />} />
+        <Route path="/vendor/proofile" element={<Vprofile/>} />
+ 
       </Routes>
     </BrowserRouter>
   );

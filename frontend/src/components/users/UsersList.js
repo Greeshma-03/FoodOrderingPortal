@@ -145,14 +145,16 @@ const UsersList = (props) => {
                   <TableCell> Sr No.</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
+                  <TableCell>Password</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user, ind) => (
+              {users.map((user, ind) => (
                   <TableRow key={ind}>
                     <TableCell>{ind}</TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.password}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

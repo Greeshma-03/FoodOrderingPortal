@@ -13,13 +13,12 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const BReg = (props) => {
-    const navigate = useNavigate();
-
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [contact, setcontact] = useState("");
     const [age, setage] = useState("");
     const [batch, setbatch] = useState("");
+    const [pw, setpw] = useState("");
 
     const onChangeUsername = (event) => {
         setname(event.target.value);
@@ -27,6 +26,10 @@ const BReg = (props) => {
 
     const onChangeemail = (event) => {
         setemail(event.target.value);
+    };
+
+    const onChangepw = (event) => {
+        setpw(event.target.value);
     };
 
     const onChangecontact = (event) => {
@@ -47,6 +50,7 @@ const BReg = (props) => {
         setcontact("");
         setage("");
         setbatch("");
+        setpw("");
     };
 
     
@@ -59,7 +63,8 @@ const BReg = (props) => {
             email: email,
             contact: contact,
             age:age,
-            batch:batch
+            batch:batch,
+            password:pw
         };
 
         axios
@@ -138,7 +143,15 @@ const BReg = (props) => {
                     </FormControl>
                 </Box>
             </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="password"
+                    variant="outlined"
+                    value={pw}
+                    onChange={onChangepw}
+                />
 
+            </Grid>
             <Grid item xs={12}>
                 <Button variant="contained" onClick={onSubmit}>
                     Register

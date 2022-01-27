@@ -22,7 +22,11 @@ const BuyerSchema = new Schema({
     batch:{
         type: Number,
         required: true
-    }
+    },
+	password:{
+		type: String,
+		required: true
+	}
 });
 
 module.exports = Buyer = mongoose.model("Buyers", BuyerSchema);

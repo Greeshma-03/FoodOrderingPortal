@@ -26,7 +26,11 @@ const VendorSchema = new Schema({
     canteenclose:{
         type:String,
         required: true
-    }
+    },
+    password:{
+		type: String,
+		required: true
+	}
 });
 
 module.exports = Vendor = mongoose.model("Vendor", VendorSchema);

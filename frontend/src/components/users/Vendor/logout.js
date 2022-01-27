@@ -4,15 +4,15 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
 import Grid from "@mui/material/Grid";
-import BuyerNavbar from '../../templates/BuyerNav';
 import { useNavigate } from "react-router-dom";
+import VendorNavbar from '../../templates/VendorNav';
 
-const BLogout = () => {
+const VLogout = () => {
     const navigate = useNavigate();
 
     return (
         <div>
-            <BuyerNavbar />
+            <VendorNavbar />
             <Grid className="container">
             </Grid>
 
@@ -26,7 +26,7 @@ const BLogout = () => {
                 <span>
                     &nbsp;&nbsp;&nbsp;
                 </span>
-                <Button variant="outlined" color="error" onClick={() => navigate("/buyer")}>
+                <Button variant="outlined" color="error" onClick={() => navigate("/vendor")}>
                     No
                 </Button>
 
@@ -35,4 +35,4 @@ const BLogout = () => {
     );
 }
 
-export default BLogout;
+export default VLogout;

@@ -1,12 +1,14 @@
-import { useState } from "react";
-import axios from "axios";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import VendorNavbar from "../../templates/VendorNav";
 
-const Vendor=(props)=>{
-    return(
-        <h1>Welcome Vendor!!</h1>        
+const Vendor = (props) => {
+    return (
+        <div>
+            <VendorNavbar />
+            <div className="container">
+                <h1>Welcome to home page {localStorage.getItem("useremail")}</h1>
+            </div>
+        </div>
+
     );
 };
 

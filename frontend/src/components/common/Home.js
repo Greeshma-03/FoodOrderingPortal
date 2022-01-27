@@ -4,6 +4,8 @@ import Navbar from "../templates/Navbar";
 const Home = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  
+  localStorage.setItem("useremail","");
 
   useEffect(() => {
     setName("Dass TAs");
