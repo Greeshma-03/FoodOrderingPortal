@@ -25,7 +25,11 @@ const FoodSchema = new Schema({
     email:{
         type:String,
         required:true
-    }
+    },
+	shop:{
+		type:String,
+		required:true
+	}
 });
 
 module.exports = Food = mongoose.model("FoodItems", FoodSchema);

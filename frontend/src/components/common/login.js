@@ -48,6 +48,7 @@ const Login = (props) => {
 
         }
         else if (response.data.val === 2) {
+          localStorage.setItem("shop",response.data.name);
           localStorage.setItem("useremail", email);
           console.log(email);
           navigate("/vendor");

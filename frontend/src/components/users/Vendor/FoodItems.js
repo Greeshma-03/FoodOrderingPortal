@@ -21,9 +21,6 @@ const FoodItems = (props) => {
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
-    const [sortedUsers, setSortedUsers] = useState([]);
-    const [sortName, setSortName] = useState(true);
-    const [searchText, setSearchText] = useState("");
     const [email, setemail] = useState(localStorage.getItem("useremail"));
     const [edit, setedit] = useState("0");
     const [index, setindex] = useState(-1);
@@ -43,8 +40,6 @@ const FoodItems = (props) => {
             .post("http://localhost:4000/user/items", newu)
             .then((response) => {
                 setUsers(response.data);
-                setSortedUsers(response.data);
-                setSearchText("");
             })
             .catch((error) => {
                 console.log(error);
@@ -55,9 +50,11 @@ const FoodItems = (props) => {
         console.log(index)
         setedit("1");
         setindex(index);
+
         const newuser = {
             id: ID
         };
+
         axios
             .post("http://localhost:4000/user/foodbyid", newuser)
             .then(response => {
@@ -110,13 +107,12 @@ const FoodItems = (props) => {
     const onSubmitsave = (Id) => {
         setindex(-1);
         setedit("0");
-        window.location.reload(false);
         const newuser = {
             id: Id,
             name: name,
             price: price,
             veg: veg,
-            email:email
+            email: email
         };
 
         console.log(newuser);
@@ -133,6 +129,7 @@ const FoodItems = (props) => {
             .catch((error) => {
                 console.log(error);
             });
+        window.location.reload(false);
     };
 
     return (
@@ -156,7 +153,6 @@ const FoodItems = (props) => {
                                         <TableCell>Item Cost</TableCell>
                                         <TableCell>Rating</TableCell>
                                         <TableCell>Food Type</TableCell>
-                                        <TableCell></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

@@ -5,11 +5,12 @@ var router = express.Router();
 const Buyer = require("../models/Buyer")
 const Vendor = require("../models/Vendor");
 const Food = require("../models/FoodItems");
+const Order = require("../models/Orders");
 
 // GET request 
 // Getting all the users
 router.get("/", function (req, res) {
-    Vendor.find(function (err, users) {
+    Order.find(function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -28,7 +29,6 @@ router.post("/login", (req, res) => {
         name: ""
     };
 
-    response.name = req.body.name;
     const pw = req.body.pw;
     Buyer.findOne({ email: email, password: pw })
         .then(user => {
@@ -43,6 +43,7 @@ router.post("/login", (req, res) => {
                         else {
                             response.val = 2;
                         }
+                        response.name = user.shop;
                         res.status(200).json(response);
                     })
                     .catch(err => {
@@ -247,7 +248,8 @@ router.post("/additem", (req, res) => {
                 price: req.body.price,
                 rating: 0,
                 veg: req.body.type,
-                email: req.body.email
+                email: req.body.email,
+                shop: req.body.shop
             });
 
             newUser.save()
@@ -264,7 +266,7 @@ router.post("/additem", (req, res) => {
 
 router.post("/items", function (req, res) {
     const email = req.body.email;
-    Food.find({email:email},function (err, users) {
+    Food.find({ email: email }, function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -274,8 +276,8 @@ router.post("/items", function (req, res) {
 });
 
 router.post("/foodbyid", function (req, res) {
-    const id=req.body.id;
-    Food.findById(id,function (err, users) {
+    const id = req.body.id;
+    Food.findById(id, function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -284,52 +286,106 @@ router.post("/foodbyid", function (req, res) {
     })
 });
 
-router.post("/delitem",function(req,res){
-    const id=req.body.id;
-    let response={
-        val:""
+router.post("/delitem", function (req, res) {
+    const id = req.body.id;
+    let response = {
+        val: ""
     }
-    Food.findByIdAndDelete(id,function (err, users) {
+    Food.findByIdAndDelete(id, function (err, users) {
         if (err) {
-            response.val=0;
+            response.val = 0;
             console.log(err);
         } else {
-            response.val=1;
+            response.val = 1;
             res.json(response);
         }
     })
 
 });
 
-router.post("/edititem",function(req,res){
-    const id=req.body.id;
-    const name=req.body.name;
-    const price=req.body.price;
-    const veg=req.body.veg;
-    
+router.post("/edititem", function (req, res) {
+    const id = req.body.id;
+    const name = req.body.name;
+    const price = req.body.price;
+    const veg = req.body.veg;
+
     console.log("redirection error..?");
 
-    let response={
-        val:""
+    let response = {
+        val: ""
     }
-    Food.findById(id,function (err, users) {
+    Food.findById(id, function (err, users) {
         if (err) {
-            response.val=0;
+            response.val = 0;
             console.log("helllllooooo");
             console.log(err);
         } else {
             console.log(users);
-            users.name=name;
-            users.price=price;
-            users.veg=veg;
+            users.name = name;
+            users.price = price;
+            users.veg = veg;
             users.save();
-            response.val=1;
+            response.val = 1;
             console.log(response);
             res.json(response);
         }
     })
 
 });
+
+
+router.get("/fooditems", function (req, res) {
+    Food.find(function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+router.post("/orderitems", function (req, res) {
+    const bemail=req.body.bemail;
+    Order.find({bemail:bemail},function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+
+
+router.post("/addorder", function (req, res) {
+    let response = {
+        val: ""
+    }
+    response.val=0;
+    
+    console.log("The information is:");
+    console.log(req.body);
+
+    const newUser=new Order({
+        bemail:req.body.bemail,
+        vemail:req.body.vemail,
+        item:req.body.item,
+        qty:req.body.qty,
+        shop:req.body.shop,
+        status:req.body.status
+    })
+    
+    newUser.save()
+        .then(User => {
+            response.val = 1;
+            res.status(200).json(response);
+        })  
+        .catch(err => {
+            console.log("Error occured while saving!!");         
+            res.status(400).send(err);
+        });
+});
+
 
 module.exports = router;
 

@@ -143,6 +143,7 @@ const BReg = (props) => {
                     </FormControl>
                 </Box>
             </Grid>
+            
             <Grid item xs={12}>
                 <TextField
                     label="password"

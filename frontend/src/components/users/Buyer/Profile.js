@@ -94,7 +94,6 @@ const BProfile = () => {
 
             });
 
-        // resetInputs();
         window.location.reload(false);
 
     };

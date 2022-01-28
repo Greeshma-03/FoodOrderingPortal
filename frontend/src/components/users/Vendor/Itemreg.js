@@ -19,6 +19,7 @@ const AddItem = (props) => {
     const [price, setprice] = useState("");
     const [type, settype] = useState("");
     const [email, setemail] = useState(localStorage.getItem("useremail"));
+    const [shop,setshop]=useState(localStorage.getItem("shop"))
 
     const onChangename = (event) => {
         setname(event.target.value);
@@ -45,7 +46,8 @@ const AddItem = (props) => {
             name: name,
             price: price,
             type: type,
-            email: email
+            email: email,
+            shop:shop
         };
 
         axios

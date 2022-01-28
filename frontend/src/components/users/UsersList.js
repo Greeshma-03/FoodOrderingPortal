@@ -152,9 +152,9 @@ const UsersList = (props) => {
               {users.map((user, ind) => (
                   <TableRow key={ind}>
                     <TableCell>{ind}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.password}</TableCell>
+                    <TableCell>{user.vemail}</TableCell>
+                    <TableCell>{user.bemail}</TableCell>
+                    <TableCell>{user.item}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

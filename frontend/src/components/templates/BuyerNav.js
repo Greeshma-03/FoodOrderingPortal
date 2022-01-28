@@ -30,11 +30,11 @@ const BuyerNavbar = () => {
           <Button color="inherit" onClick={() => navigate("/buyer/Favourites")}>
             Favourites
           </Button>
-          <Button color="inherit" onClick={() => navigate("/buyer/Food_items")}>
-            Food Items
+          <Button color="inherit" onClick={() => navigate("/buyer/items")}>
+            Food-Items
           </Button>
-          <Button color="inherit" onClick={() => navigate("/buyer/Order")}>
-            Order Items
+          <Button color="inherit" onClick={() => navigate("/buyer/order")}>
+            Order-Items
           </Button>
           <Button color="inherit" onClick={() => navigate("/buyer/Wallet")}>
             Wallet

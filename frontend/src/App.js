@@ -17,6 +17,8 @@ import VLogout from "./components/users/Vendor/logout";
 import Vprofile from "./components/users/Vendor/Profile";
 import FoodItems from "./components/users/Vendor/FoodItems";
 import AddItem from "./components/users/Vendor/Itemreg";
+import Items from "./components/users/Buyer/FoodItems";
+import OrderItems from "./components/users/Buyer/OrderItems";
 
 const Layout = () => {
 
@@ -47,6 +49,9 @@ function App() {
         <Route path="/buyer" element={<Buyer />} />
         <Route path="/buyer/profile" element={<BProfile />} />
         <Route path="/buyer/logout" element={<BLogout />} />
+        <Route path="/buyer/items" element={<Items />} />
+        <Route path="/buyer/order" element={<OrderItems />} />
+        
 
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/vendor/logout" element={<VLogout />} />

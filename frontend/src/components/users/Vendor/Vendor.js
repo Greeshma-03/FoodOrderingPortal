@@ -1,11 +1,12 @@
 import VendorNavbar from "../../templates/VendorNav";
 
 const Vendor = (props) => {
+
     return (
         <div>
             <VendorNavbar />
             <div className="container">
-                <h1>Welcome to home page {localStorage.getItem("useremail")}</h1>
+                <h1>Welcome to home page of {localStorage.getItem("shop")}</h1>
             </div>
         </div>
 
