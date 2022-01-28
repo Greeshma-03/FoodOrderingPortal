@@ -29,6 +29,14 @@ const OrdersSchema = new Schema({
 	status:{
 		type: String,
 		required: true,
+	},
+	price:{
+		type:Number,
+		required: true
+	},
+	rating:{
+		type:Number,
+		default:0
 	}
 });
 

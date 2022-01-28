@@ -34,7 +34,7 @@ const BuyerNavbar = () => {
             Food-Items
           </Button>
           <Button color="inherit" onClick={() => navigate("/buyer/order")}>
-            Order-Items
+            MyCart
           </Button>
           <Button color="inherit" onClick={() => navigate("/buyer/Wallet")}>
             Wallet

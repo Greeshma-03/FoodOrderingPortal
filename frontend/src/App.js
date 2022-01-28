@@ -19,6 +19,9 @@ import FoodItems from "./components/users/Vendor/FoodItems";
 import AddItem from "./components/users/Vendor/Itemreg";
 import Items from "./components/users/Buyer/FoodItems";
 import OrderItems from "./components/users/Buyer/OrderItems";
+import Selling from "./components/users/Vendor/delivery";
+import Ratingg from "./components/users/Buyer/rating";
+import Qty from "./components/users/Buyer/Qty";
 
 const Layout = () => {
 
@@ -51,6 +54,8 @@ function App() {
         <Route path="/buyer/logout" element={<BLogout />} />
         <Route path="/buyer/items" element={<Items />} />
         <Route path="/buyer/order" element={<OrderItems />} />
+        <Route path="/buyer/rating" element={<Ratingg />} />
+        <Route path="/buyer/qty" element={<Qty />} />
         
 
         <Route path="/vendor" element={<Vendor />} />
@@ -58,6 +63,8 @@ function App() {
         <Route path="/vendor/proofile" element={<Vprofile />} />
         <Route path="/vendor/menu" element={<FoodItems />} />
         <Route path="/vendor/additem" element={<AddItem />} />
+        <Route path="/vendor/orders" element={<Selling />} />
+        
       </Routes>
     </BrowserRouter>
   );

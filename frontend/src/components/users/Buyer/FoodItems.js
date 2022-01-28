@@ -47,37 +47,10 @@ const Items = (props) => {
             });
     }, []);
 
-    const onSubmitOrder = (user,qty) => {
-       
-    const nuser={
-        vemail:user.email,
-        bemail:email,
-        item:user.name,
-        qty:0,
-        status:"placed",
-        shop:user.shop
-    };
-
-        axios
-            .post("http://localhost:4000/user/addorder", nuser)
-            .then(response => {
-                if(response.data.val===1)
-                alert("Order placed Successfully!!");
-                else
-                alert("Failed to place Order!!");            
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        setedit("0");
-        setindex(-1);
-    };
-
-    const onChangeqty = (event, ind) => {
-        setedit("1");
-        setindex(ind);
-        setqty(event);
+    const onSubmitOrder = (id) => {
+        
+        localStorage.setItem("id",id);
+        navigate("/buyer/qty");
     };
 
 
@@ -115,12 +88,21 @@ const Items = (props) => {
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>{user.price}</TableCell>
                                             <TableCell>{user.rating}</TableCell>
-                                            <TableCell>{user.veg}</TableCell>
-                                            <TableCell>{user.shop}</TableCell>
-                                            <TableCell>{user.email}</TableCell>
+                                            <TableCell>{user.peep}</TableCell>
+                                            {user.rating == 0 || user.peep==0 ?
+                                                <TableCell>0</TableCell>
+                                                :
+                                                <>
+                                                    <TableCell>{Math.floor(1.00*user.rating / user.peep)}</TableCell>
+                                                    <TableCell>{user.veg}</TableCell>
+                                                    <TableCell>{user.shop}</TableCell>
+                                                    <TableCell>{user.email}</TableCell>
+                                                </>
+                                            }
+
 
                                             <TableCell><Grid item xs={12}>
-                                                <Button variant="contained" color="success" onClick={() => onSubmitOrder(user, qty)}>
+                                                <Button variant="contained" color="success" onClick={() => onSubmitOrder(user._id)}>
                                                     Order
                                                 </Button>
                                             </Grid></TableCell>

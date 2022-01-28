@@ -14,16 +14,15 @@ import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate } from "react-router-dom";
-import BuyerNavbar from "../../templates/BuyerNav";
+import VendorNavbar from "../../templates/VendorNav";
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 
-const OrderItems = (props) => {
+
+const Selling = (props) => {
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
@@ -40,11 +39,11 @@ const OrderItems = (props) => {
 
     useEffect(() => {
         const user = {
-            bemail: email
+            vemail: email
         };
 
         axios
-            .post("http://localhost:4000/user/orderitems", user)
+            .post("http://localhost:4000/user/delivery", user)
             .then((response) => {
                 setUsers(response.data);
             })
@@ -53,18 +52,21 @@ const OrderItems = (props) => {
             });
     }, []);
 
+    const onSubmitStage = (id) => {
 
-    const onSubmitPickup = (id) => {
         const nuser = {
             id: id
-        }
+        };
+
+        console.log(nuser);
+
         axios
-            .post("http://localhost:4000/user/pickorder", nuser)
+            .post("http://localhost:4000/user/stageedit", nuser)
             .then(response => {
                 if (response.data.val === 1)
-                    alert("Order placed Successfully!!");
+                    alert("Order Edited Successfully!!");
                 else
-                    alert("Failed to place Order!!");
+                    alert("Failed to edit Order!!");
 
             })
             .catch((error) => {
@@ -73,17 +75,40 @@ const OrderItems = (props) => {
         window.location.reload(false);
     };
 
-    const onSubmitrating = (id) => {
-        localStorage.setItem("id", id);
-        navigate("/buyer/rating")
+    const onSubmitreject = (id) => {
 
+        const nuser = {
+            id: id
+        };
+
+        console.log(nuser);
+
+        axios
+            .post("http://localhost:4000/user/reject", nuser)
+            .then(response => {
+                if (response.data.val === 1)
+                    alert("Rejected Successfully!!");
+                else
+                    alert("Failed to reject Order!!");
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        window.location.reload(false);
+    };
+
+    const onChangeqty = (event, ind) => {
+        setedit("1");
+        setindex(ind);
+        setqty(event);
     };
 
 
     return (
         <div>
             <div>
-                <BuyerNavbar />
+                <VendorNavbar />
 
                 <div className="container">
 
@@ -98,7 +123,6 @@ const OrderItems = (props) => {
                                         <TableCell>Vendor email</TableCell>
                                         <TableCell>Shop</TableCell>
                                         <TableCell>Status</TableCell>
-                                        <TableCell>Rating</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -111,35 +135,26 @@ const OrderItems = (props) => {
                                             <TableCell>{user.vemail}</TableCell>
                                             <TableCell>{user.shop}</TableCell>
                                             <TableCell>{user.status}</TableCell>
-                                            <TableCell>{user.price}</TableCell>
-
-                                            {user.status == "readyforpickup" &&
+                                            {user.status == "placed" || user.status == "accepted" || user.status == "cooking" ?
                                                 <>
                                                     < TableCell > <Grid item xs={12}>
-                                                        <Button variant="contained" color="success" onClick={() => onSubmitPickup(user._id)}>
-                                                            Picked Up
+                                                        <Button variant="contained" color="success" onClick={() => onSubmitStage(user._id)}>
+                                                            Move to Next Stage
                                                         </Button>
                                                     </Grid></TableCell>
-                                                </>
-                                            }
+                                                    {user.status == "placed" &&
+                                                        < TableCell > <Grid item xs={12}>
+                                                            <Button variant="contained" color="error" onClick={() => onSubmitreject(user._id)}>
+                                                                Reject
+                                                            </Button>
+                                                        </Grid></TableCell>
+                                                    }
 
-                                            {user.status == "completed" && user.rating == 0 &&
+                                                </>
+                                                :
                                                 <>
-                                                    < TableCell > <Grid item xs={12}>
-                                                        <Button variant="contained" color="success" onClick={() => onSubmitrating(user._id)}>
-                                                            Rate Item
-                                                        </Button>
-                                                    </Grid></TableCell>
                                                 </>
                                             }
-                                            {user.rating!=0 &&
-                                                <TableCell>
-                                                    <Typography component="legend"></Typography>
-                                                    <Rating name="disabled" value={user.rating} disabled />
-                                                </TableCell>
-
-                                            }
-
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -152,4 +167,4 @@ const OrderItems = (props) => {
     );
 };
 
-export default OrderItems;
+export default Selling;

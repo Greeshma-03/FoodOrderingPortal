@@ -9,26 +9,36 @@ const FoodSchema = new Schema({
 	},
 	price: {
 		type: Number,
+		min:0,
 		required: true
 	},
-	rating:{
+	rating: {
 		type: Number,
 		required: true,
-        default:0,
-        min:0,
-        max:5
+		default: 0,
+		min: 0,
 	},
-    veg:{
-        type: String,
-        required: true
-    },
-    email:{
-        type:String,
-        required:true
-    },
-	shop:{
-		type:String,
-		required:true
+	peep:{
+		type: Number,
+		default: 0,
+		required: true
+	},
+	buyers:{
+		type:Number,
+		default: 0,
+		required: true
+	},
+	veg: {
+		type: String,
+		required: true
+	},
+	email: {
+		type: String,
+		required: true
+	},
+	shop: {
+		type: String,
+		required: true
 	}
 });
 

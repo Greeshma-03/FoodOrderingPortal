@@ -249,7 +249,8 @@ router.post("/additem", (req, res) => {
                 rating: 0,
                 veg: req.body.type,
                 email: req.body.email,
-                shop: req.body.shop
+                shop: req.body.shop,
+                peep: 0
             });
 
             newUser.save()
@@ -345,8 +346,19 @@ router.get("/fooditems", function (req, res) {
 });
 
 router.post("/orderitems", function (req, res) {
-    const bemail=req.body.bemail;
-    Order.find({bemail:bemail},function (err, users) {
+    const bemail = req.body.bemail;
+    Order.find({ bemail: bemail }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+router.post("/delivery", function (req, res) {
+    const vemail = req.body.vemail;
+    Order.find({ vemail: vemail }, function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -361,29 +373,208 @@ router.post("/addorder", function (req, res) {
     let response = {
         val: ""
     }
-    response.val=0;
-    
+    response.val = 0;
+
     console.log("The information is:");
     console.log(req.body);
 
-    const newUser=new Order({
-        bemail:req.body.bemail,
-        vemail:req.body.vemail,
-        item:req.body.item,
-        qty:req.body.qty,
-        shop:req.body.shop,
-        status:req.body.status
+    const newUser = new Order({
+        bemail: req.body.bemail,
+        vemail: req.body.vemail,
+        item: req.body.item,
+        qty: req.body.qty,
+        shop: req.body.shop,
+        status: req.body.status,
+        price: req.body.price
     })
-    
+
     newUser.save()
         .then(User => {
             response.val = 1;
             res.status(200).json(response);
-        })  
+        })
         .catch(err => {
-            console.log("Error occured while saving!!");         
+            console.log("Errorrrrrs occured while saving!!");
+            console.log(err);
             res.status(400).send(err);
         });
+});
+
+
+router.post("/stageedit", function (req, res) {
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+    const id = req.body.id;
+
+    console.log("The information is:");
+    console.log(req.body);
+
+    const use = {
+        placed: "placed",
+        accepted: "accepted",
+        cooking: "cooking",
+        pick: "readyforpickup"
+    }
+
+    Order.findById(id, function (err, users) {
+        if (err) {
+            response.val = 0;
+            console.log("helllllooooo");
+            console.log(err);
+        } else {
+            console.log(users);
+
+            if (users.status == use.placed) {
+                users.status = use.accepted;
+            }
+            else if (users.status == use.accepted)
+                users.status = use.cooking;
+            else if (users.status === use.cooking)
+                users.status = use.pick;
+            console.log("before death.....");
+            console.log(users);
+
+            users.save()
+                .then(User => {
+                    response.val = 1;
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    console.log("Error occured while saving!!");
+                    res.status(400).send(err);
+                });
+            console.log(response);
+        }
+    })
+
+});
+
+router.post("/pickorder", function (req, res) {
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+    const id = req.body.id;
+
+    // console.log("The information is:");
+    // console.log(req.body);
+
+    Order.findById(id, function (err, users) {
+        if (err) {
+            response.val = 0;
+        } else {
+            console.log(users);
+
+            if (users.status == "readyforpickup") {
+                users.status = "completed";
+            }
+
+            users.save()
+                .then(User => {
+                    response.val = 1;
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    console.log("Error occured while saving!!");
+                    res.status(400).send(err);
+                });
+        }
+    })
+
+});
+
+router.post("/reject", function (req, res) {
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+    const id = req.body.id;
+
+    // console.log("The information is:");
+    // console.log(req.body);
+
+    Order.findById(id, function (err, users) {
+        if (err) {
+            response.val = 0;
+        } else {
+            console.log(users);
+
+            if (users.status == "placed") {
+                users.status = "rejected";
+            }
+
+            users.save()
+                .then(User => {
+                    response.val = 1;
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    console.log("Error occured while saving!!");
+                    res.status(400).send(err);
+                });
+        }
+    })
+
+});
+
+router.post("/rate", function (req, res) {
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+    const id = req.body.id;
+    const rate = req.body.rating;
+
+    // console.log("The information is:");
+    // console.log(req.body);
+
+    Order.findById(id, function (err, users) {
+        if (err) {
+            response.val = 0;
+        } else {
+            console.log(users);
+
+            const vemail = users.vemail;
+            const item = users.item;
+            if(!users.rating){
+            Food.findOne({ email: vemail, name: item }, function (err, userrs) {
+                const peep = userrs.peep + 1;
+                userrs.peep = peep;
+                const rating = userrs.rating;
+                userrs.rating = rating + rate;
+                users.rating=rate;
+                users.save();
+                userrs.save()
+                    .then(User => {
+                        response.val = 1;
+                        res.status(200).json(response);
+                    })
+                    .catch(err => {
+                        console.log("Error occured while saving!!");
+                        res.status(400).send(err);
+                    });
+            });
+        }
+        }
+    })
+
+});
+
+
+router.post("/getbyid", function (req, res) {
+    const id = req.body.id;
+
+    Food.findById(id, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(users);
+            res.json(users);
+        }
+    })
+
 });
 
 
