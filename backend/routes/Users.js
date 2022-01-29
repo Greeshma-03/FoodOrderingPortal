@@ -123,6 +123,10 @@ router.post("/vregister", (req, res) => {
         }
         else {
             Vendor.findOne({ shop: shop }).then(uuser => {
+                const open=req.body.canteenopen+":"+"00"+":"+"00";
+                const close=req.body.canteenclose+":"+"00"+":"+"00";
+                console.log(open);
+                console.log(close);
                 if (uuser) {
                     response.val = 0;
                     response.name = req.body.name;
@@ -135,13 +139,15 @@ router.post("/vregister", (req, res) => {
                         shop: req.body.shop,
                         email: req.body.email,
                         contactno: req.body.contactno,
-                        canteenopen: req.body.canteenopen,
-                        canteenclose: req.body.canteenclose,
+                        canteenopen: open,
+                        canteenclose: close,
                         password: req.body.password
                     });
 
                     newUser.save()
                         .then(user => {
+                            console.log("New Vendor is: ");
+                            console.log(newUser);
                             response.name = req.body.name;
                             res.status(200).json(response);
                         })
@@ -661,20 +667,20 @@ router.post("/foodavail", function (req, res) {
                     console.log(err);
                 } else {
                     console.log(use);
-                    var startTime = use.canteenopen+":";
-                    var endTime = use.canteenclose+":";
+                    var startTime = use.canteenopen;
+                    var endTime = use.canteenclose;
 
                     currentDate = new Date()
 
                     startDate = new Date(currentDate.getTime());
                     startDate.setHours(startTime.split(":")[0]);
-                    // startDate.setMinutes(startTime.split(":")[1]);
-                    // startDate.setSeconds(startTime.split(":")[2]);
+                    startDate.setMinutes(startTime.split(":")[1]);
+                    startDate.setSeconds(startTime.split(":")[2]);
 
                     endDate = new Date(currentDate.getTime());
                     endDate.setHours(endTime.split(":")[0]);
-                    // endDate.setMinutes(endTime.split(":")[1]);
-                    // endDate.setSeconds(endTime.split(":")[2]);
+                    endDate.setMinutes(endTime.split(":")[1]);
+                    endDate.setSeconds(endTime.split(":")[2]);
 
                     console.log(startTime)
                     console.log(startDate);

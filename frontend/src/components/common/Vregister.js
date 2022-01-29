@@ -132,7 +132,7 @@ const VReg = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <TextField
-                    label="Canteen Opening time"
+                    label="Opening time(in 24-hrs)"
                     variant="outlined"
                     value={canteenopen}
                     onChange={onChangeopen}
@@ -141,7 +141,7 @@ const VReg = (props) => {
 
             <Grid item xs={12}>
                 <TextField
-                    label="Canteen Closing time"
+                    label="Closing time(in 24-hrs)"
                     variant="outlined"
                     value={canteenclose}
                     onChange={onChangeclose}
