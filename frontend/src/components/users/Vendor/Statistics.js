@@ -26,9 +26,11 @@ const Stats = (props) => {
     const [users, setUsers] = useState([]);
     const [orderusers, setorderUsers] = useState([]);
     const [email, setemail] = useState(localStorage.getItem("useremail"));
-    const [placed, setplaced] = useState(0);
-    const [pending, setpending] = useState(0);
-    const [completed, setcompleted] = useState(0);
+
+    var placed = 0;
+    var pending = 0;
+    let completed = 0;
+    let rejected = 0;
 
     const user = {
         email: email
@@ -39,6 +41,7 @@ const Stats = (props) => {
             .post("http://localhost:4000/user/vorderitems", user)
             .then((response) => {
                 setorderUsers(response.data);
+                // console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -49,32 +52,48 @@ const Stats = (props) => {
         <div>
             <VendorNavbar />
             <div className="container">
-                <h1>Welcome to home page of {localStorage.getItem("shop")}</h1>
-                <>
-                    <div className="container" style={{ textAlign: "center" }}>
-                        <Grid item xs={12} md={9} lg={9}>
-                            <Paper>
-                                <Table size="small">
+                    <Grid item xs={12} md={9} lg={9}>
+                        <Paper>
+                            <Table size="small">
+                                <TableHead>
+                                    <TableRow>
 
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
                                     {orderusers.map((user, ind) => (
                                         <>
-                                            {user.status=="placed" && setplaced(2)}
-
-                                        </>
+                                            {(() => {
+                                                if (user.status === "placed") {
+                                                    placed = placed + 1;
+                                                    console.log(placed);
+                                                }
+                                                else if (user.status === "completed") {
+                                                    completed = completed + 1;
+                                                    console.log(completed)
+                                                }
+                                                else if (user.status === "rejected") {
+                                                    rejected = rejected + 1;
+                                                }
+                                                else{
+                                                    pending = 1 + pending;
+                                                }
+                                            }
+                                            )()}
+                                            </>
                                     ))}
-                                </Table>
-                            </Paper>
-                        </Grid>
-                    </div>
-                </>
-                <div className="container" style={{ textAlign: "center" }}>
-                    <h2>Orders placed-{placed}</h2>
-                    <h2>Orders completed-{completed}</h2>
-                </div>
+
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </Grid>
+                <h2>placed-{placed}</h2>
+                <h2>completed-{completed}</h2>
             </div>
-        </div>
+        </div >
 
     );
 };
 
 export default Stats;
+

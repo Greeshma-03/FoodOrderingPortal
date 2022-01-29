@@ -23,6 +23,8 @@ import Selling from "./components/users/Vendor/delivery";
 import Ratingg from "./components/users/Buyer/rating";
 import Qty from "./components/users/Buyer/Qty";
 import Stats from "./components/users/Vendor/Statistics"
+import Favs from "./components/users/Buyer/fav";
+import Wallet from "./components/users/Buyer/wallet";
 
 const Layout = () => {
 
@@ -57,6 +59,8 @@ function App() {
         <Route path="/buyer/order" element={<OrderItems />} />
         <Route path="/buyer/rating" element={<Ratingg />} />
         <Route path="/buyer/qty" element={<Qty />} />
+        <Route path="/buyer/favs" element={<Favs />} />
+        <Route path="/buyer/wallet" element={<Wallet />} />
         
 
         <Route path="/vendor" element={<Vendor />} />

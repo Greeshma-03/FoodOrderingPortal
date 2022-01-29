@@ -132,6 +132,7 @@ const OrderItems = (props) => {
                                                     </Grid></TableCell>
                                                 </>
                                             }
+                                            
                                             {user.rating!=0 &&
                                                 <TableCell>
                                                     <Typography component="legend"></Typography>

@@ -61,10 +61,15 @@ const Qty = (props) => {
         axios
             .post("http://localhost:4000/user/addorder", nuser)
             .then(response => {
-                if (response.data.val === 1)
+                if (response.data.val === 1){
+
                     alert("Order placed Successfully!!");
+                }
                 else
+                {
+                    console.log(response.data.val);
                     alert("Failed to place Order!!");
+                }
 
             })
             .catch((error) => {

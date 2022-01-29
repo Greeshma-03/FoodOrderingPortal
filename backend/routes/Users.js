@@ -123,8 +123,8 @@ router.post("/vregister", (req, res) => {
         }
         else {
             Vendor.findOne({ shop: shop }).then(uuser => {
-                const open=req.body.canteenopen+":"+"00"+":"+"00";
-                const close=req.body.canteenclose+":"+"00"+":"+"00";
+                const open = req.body.canteenopen + ":" + "00" + ":" + "00";
+                const close = req.body.canteenclose + ":" + "00" + ":" + "00";
                 console.log(open);
                 console.log(close);
                 if (uuser) {
@@ -430,26 +430,59 @@ router.post("/addorder", function (req, res) {
     console.log("The information is:");
     console.log(req.body);
 
-    const newUser = new Order({
-        bemail: req.body.bemail,
-        vemail: req.body.vemail,
-        item: req.body.item,
-        qty: req.body.qty,
-        shop: req.body.shop,
-        status: req.body.status,
-        price: req.body.price
+
+
+    Buyer.findOne({ email: req.body.bemail }, function (err, users) {
+        if (err) {
+            console.log("error in findinh buyer");
+            console.log(err);
+        } else {
+            // users.fav.app
+            var cost = parseInt(req.body.qty) * parseInt(req.body.price);
+            //order can be placed
+            if (users.money >= cost) {
+                const mon = users.money;
+                users.money = mon - cost;
+
+                const newUser = new Order({
+                    bemail: req.body.bemail,
+                    vemail: req.body.vemail,
+                    item: req.body.item,
+                    qty: req.body.qty,
+                    shop: req.body.shop,
+                    status: req.body.status,
+                    price: req.body.price
+                })
+                newUser.save()
+                    .then(User => {
+                    })
+                    .catch(err => {
+                        console.log("Errorrrrrs occured while placing order!!");
+                        console.log(err);
+                        res.status(400).send(err);
+                    });
+
+                users.save()
+                    .then(User => {
+                    })
+                    .catch(err => {
+                        console.log("Error occured while deducting money!!");
+                        console.log(err);
+                        res.status(400).send(err);
+                    });
+                response.val = 1;
+                res.json(response);
+
+            }
+            else {
+                console.log("wallet insufficinet");
+                response.val = 0;
+                res.json(response);
+            }
+        }
     })
 
-    newUser.save()
-        .then(User => {
-            response.val = 1;
-            res.status(200).json(response);
-        })
-        .catch(err => {
-            console.log("Errorrrrrs occured while saving!!");
-            console.log(err);
-            res.status(400).send(err);
-        });
+
 });
 
 
@@ -633,15 +666,86 @@ router.post("/addfav", function (req, res) {
     const id = req.body.itemid;
     const buyeremail = req.body.bemail;
 
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+
     Buyer.findOne({ email: buyeremail }, function (err, users) {
         if (err) {
             console.log(err);
         } else {
             // users.fav.app
             console.log(users);
-            res.json(users);
+            users.fav.push(id);
+            users.save()
+                .then(User => {
+                    response.val = 1;
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    console.log("Error while adding to favourites tab of buyer!!");
+                    res.status(400).send(err);
+                });
             //how to add array of strings..?
         }
+    })
+
+});
+
+router.post("/favlist", function (req, res) {
+    const buyeremail = req.body.bemail;
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+
+    Buyer.findOne({ email: buyeremail }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            // users.fav.app
+            console.log("List of Favourites is..")
+            console.log(users.fav);
+            res.json(users);
+        }
+    })
+
+});
+
+router.post("/addmoney", function (req, res) {
+    const buyeremail = req.body.email;
+    console.log(buyeremail);
+    var money = parseInt(req.body.money);
+
+    let response = {
+        val: ""
+    }
+    response.val = 0;
+    console.log("came here!!");
+
+    Buyer.findOne({ email: buyeremail }, function (err, users) {
+        let response = {
+            val: ""
+        }
+        response.val = 0;
+        if (err) {
+            console.log("couldn't find");
+            console.log(err);
+        } else {
+            var hehe = parseInt(users.money);
+            users.money = parseInt(hehe + money);
+            users.save()
+                .then(user => {
+                    response.val = 1;
+                    res.json(response);
+                })
+                .catch(err => {
+                    console.log("Error in saving money to be added!!");
+                    res.status(400).send(err);
+                });
+        }
+
     })
 
 });
@@ -649,11 +753,11 @@ router.post("/addfav", function (req, res) {
 
 router.post("/foodavail", function (req, res) {
     const id = req.body.itemid;
-    
-    let response={
-        val:""
+
+    let response = {
+        val: ""
     }
-    response.val=-1;
+    response.val = -1;
 
     Food.findById(id, function (err, users) {
         if (err) {
@@ -685,14 +789,14 @@ router.post("/foodavail", function (req, res) {
                     console.log(startTime)
                     console.log(startDate);
                     console.log(currentDate);
-                    
+
                     valid = startDate < currentDate && endDate > currentDate;
                     console.log("Validation answer is..")
                     console.log(valid);
-                    if(valid==false)
-                    response.val=0;
+                    if (valid == false)
+                        response.val = 0;
                     else
-                    response.val=1;
+                        response.val = 1;
 
                     res.json(response);
                 }

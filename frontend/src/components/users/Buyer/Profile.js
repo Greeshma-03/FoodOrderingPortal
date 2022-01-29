@@ -108,6 +108,7 @@ const BProfile = () => {
                 <h2>Email-{users.email}</h2>
                 <h2>batch-{users.batch}</h2>
                 <h2>age-{users.age}</h2>
+                <h2>MOney-{users.money}</h2>
 
 
                 <Grid container align={"left"} spacing={2}>

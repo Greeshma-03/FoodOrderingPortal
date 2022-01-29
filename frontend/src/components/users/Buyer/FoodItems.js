@@ -82,9 +82,9 @@ const Items = (props) => {
             .post("http://localhost:4000/user/addfav", nuser)
             .then(response => {
                 if (response.data.val === 1)
-                    alert("Order placed Successfully!!");
+                    alert("Added to favourites!!");
                 else
-                    alert("Failed to place Order!!");
+                    alert("Failed to add to favourites!!");
 
             })
             .catch((error) => {
@@ -123,11 +123,12 @@ const Items = (props) => {
                                             <TableCell>{user.price}</TableCell>
                                             <TableCell>{user.rating}</TableCell>
                                             <TableCell>{user.peep}</TableCell>
+
                                             {user.rating == 0 || user.peep == 0 ?
                                                 <TableCell>0</TableCell>
                                                 :
                                                 <>
-                                                    <TableCell>{Math.floor(1.00 * user.rating / user.peep)}</TableCell>
+                                                    <TableCell>{Math.floor(user.rating / user.peep)}</TableCell>
                                                     <TableCell>{user.veg}</TableCell>
                                                     <TableCell>{user.shop}</TableCell>
                                                     <TableCell>{user.email}</TableCell>
