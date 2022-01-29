@@ -48,14 +48,48 @@ const Items = (props) => {
     }, []);
 
     const onSubmitOrder = (id) => {
-        
-        localStorage.setItem("id",id);
+
+        localStorage.setItem("foodid", id);
         navigate("/buyer/qty");
     };
 
+    const onSubmitAvailable = (id) => {
+        const nuser = {
+            itemid: id
+        }
+        axios
+            .post("http://localhost:4000/user/foodavail", nuser)
+            .then(response => {
+                if (response.data.val === 1)
+                    alert("Currently Available!!");
+                else if(response.data.val===0)
+                    alert("Not available!!");
 
-    const onSubmitFav = () => {
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
+
+    const onSubmitFav = (id) => {
+        const nuser = {
+            itemid: id,
+            bemail: email
+        }
+
+        axios
+            .post("http://localhost:4000/user/addfav", nuser)
+            .then(response => {
+                if (response.data.val === 1)
+                    alert("Order placed Successfully!!");
+                else
+                    alert("Failed to place Order!!");
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
 
@@ -89,17 +123,18 @@ const Items = (props) => {
                                             <TableCell>{user.price}</TableCell>
                                             <TableCell>{user.rating}</TableCell>
                                             <TableCell>{user.peep}</TableCell>
-                                            {user.rating == 0 || user.peep==0 ?
+                                            {user.rating == 0 || user.peep == 0 ?
                                                 <TableCell>0</TableCell>
                                                 :
                                                 <>
-                                                    <TableCell>{Math.floor(1.00*user.rating / user.peep)}</TableCell>
+                                                    <TableCell>{Math.floor(1.00 * user.rating / user.peep)}</TableCell>
                                                     <TableCell>{user.veg}</TableCell>
                                                     <TableCell>{user.shop}</TableCell>
                                                     <TableCell>{user.email}</TableCell>
                                                 </>
                                             }
 
+                                            <Button onClick={() => onSubmitAvailable(user._id)}>Check Availabitliy  </Button>
 
                                             <TableCell><Grid item xs={12}>
                                                 <Button variant="contained" color="success" onClick={() => onSubmitOrder(user._id)}>
@@ -107,7 +142,7 @@ const Items = (props) => {
                                                 </Button>
                                             </Grid></TableCell>
                                             <TableCell><Grid item xs={12}>
-                                                <Button variant="contained" onClick={() => onSubmitFav(ind, user._id)}>
+                                                <Button variant="contained" onClick={() => onSubmitFav(user._id)}>
                                                     Add to Favourites
                                                 </Button>
                                             </Grid></TableCell>

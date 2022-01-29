@@ -74,7 +74,7 @@ const OrderItems = (props) => {
     };
 
     const onSubmitrating = (id) => {
-        localStorage.setItem("id", id);
+        localStorage.setItem("orderid", id);
         navigate("/buyer/rating")
 
     };

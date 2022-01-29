@@ -26,7 +26,12 @@ const BuyerSchema = new Schema({
 	password:{
 		type: String,
 		required: true
-	}
+	},
+	fav:[
+		{
+			type:String
+		}
+	]
 });
 
 module.exports = Buyer = mongoose.model("Buyers", BuyerSchema);

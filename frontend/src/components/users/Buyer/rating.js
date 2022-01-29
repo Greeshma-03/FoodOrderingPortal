@@ -15,7 +15,7 @@ const Ratingg = (props) => {
 
     const [value, setValue] = React.useState(2);
     console.log(value);
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem("orderid");
     
     const onSubmitrating = () => {
 
@@ -28,7 +28,7 @@ const Ratingg = (props) => {
             .then(response => {
                 if (response.data.val === 1){
                     alert("Rating Submitted!!");
-                    
+
                 }
                 else
                     alert("Failed to rate item!!");

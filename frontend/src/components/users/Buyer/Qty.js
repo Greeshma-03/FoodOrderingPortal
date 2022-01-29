@@ -20,7 +20,7 @@ const Qty = (props) => {
     const email = localStorage.getItem("useremail");
     const [value, setValue] = React.useState(2);
     console.log(value);
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem("foodid");
     const [qty, setqty] = React.useState('');
     const [vemail, setvemail] = useState("");
     const [item, setitem] = useState("");

@@ -250,7 +250,8 @@ router.post("/additem", (req, res) => {
                 veg: req.body.type,
                 email: req.body.email,
                 shop: req.body.shop,
-                peep: 0
+                peep: 0,
+                buyers: 0
             });
 
             newUser.save()
@@ -345,6 +346,32 @@ router.get("/fooditems", function (req, res) {
     })
 });
 
+router.post("/fooditems", function (req, res) {
+    const email = req.body.email;
+
+    Food.find({ email: email }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+
+router.post("/vorderitems", function (req, res) {
+    const vemail = req.body.email;
+    Order.find({ vemail: vemail }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
+
+
+
 router.post("/orderitems", function (req, res) {
     const bemail = req.body.bemail;
     Order.find({ bemail: bemail }, function (err, users) {
@@ -374,6 +401,25 @@ router.post("/addorder", function (req, res) {
         val: ""
     }
     response.val = 0;
+    const id = req.body.id;
+
+    Food.findById(id, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            const uff = users.buyers;
+            users.buyers = 1 + uff;
+            users.save()
+
+                .then(User => {
+                    response.val = 1;
+                })
+                .catch(err => {
+                    console.log("Error while updating no. of buyers!!");
+                    console.log(err);
+                });
+        }
+    })
 
     console.log("The information is:");
     console.log(req.body);
@@ -538,25 +584,25 @@ router.post("/rate", function (req, res) {
 
             const vemail = users.vemail;
             const item = users.item;
-            if(!users.rating){
-            Food.findOne({ email: vemail, name: item }, function (err, userrs) {
-                const peep = userrs.peep + 1;
-                userrs.peep = peep;
-                const rating = userrs.rating;
-                userrs.rating = rating + rate;
-                users.rating=rate;
-                users.save();
-                userrs.save()
-                    .then(User => {
-                        response.val = 1;
-                        res.status(200).json(response);
-                    })
-                    .catch(err => {
-                        console.log("Error occured while saving!!");
-                        res.status(400).send(err);
-                    });
-            });
-        }
+            if (!users.rating) {
+                Food.findOne({ email: vemail, name: item }, function (err, userrs) {
+                    const peep = userrs.peep + 1;
+                    userrs.peep = peep;
+                    const rating = userrs.rating;
+                    userrs.rating = rating + rate;
+                    users.rating = rate;
+                    users.save();
+                    userrs.save()
+                        .then(User => {
+                            response.val = 1;
+                            res.status(200).json(response);
+                        })
+                        .catch(err => {
+                            console.log("Error occured while saving!!");
+                            res.status(400).send(err);
+                        });
+                });
+            }
         }
     })
 
@@ -577,6 +623,78 @@ router.post("/getbyid", function (req, res) {
 
 });
 
+router.post("/addfav", function (req, res) {
+    const id = req.body.itemid;
+    const buyeremail = req.body.bemail;
+
+    Buyer.findOne({ email: buyeremail }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            // users.fav.app
+            console.log(users);
+            res.json(users);
+            //how to add array of strings..?
+        }
+    })
+
+});
+
+
+router.post("/foodavail", function (req, res) {
+    const id = req.body.itemid;
+    
+    let response={
+        val:""
+    }
+    response.val=-1;
+
+    Food.findById(id, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("the user is...")
+            console.log(users);
+            const email = users.email;
+            Vendor.findOne({ email: email }, function (err, use) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(use);
+                    var startTime = use.canteenopen+":";
+                    var endTime = use.canteenclose+":";
+
+                    currentDate = new Date()
+
+                    startDate = new Date(currentDate.getTime());
+                    startDate.setHours(startTime.split(":")[0]);
+                    // startDate.setMinutes(startTime.split(":")[1]);
+                    // startDate.setSeconds(startTime.split(":")[2]);
+
+                    endDate = new Date(currentDate.getTime());
+                    endDate.setHours(endTime.split(":")[0]);
+                    // endDate.setMinutes(endTime.split(":")[1]);
+                    // endDate.setSeconds(endTime.split(":")[2]);
+
+                    console.log(startTime)
+                    console.log(startDate);
+                    console.log(currentDate);
+                    
+                    valid = startDate < currentDate && endDate > currentDate;
+                    console.log("Validation answer is..")
+                    console.log(valid);
+                    if(valid==false)
+                    response.val=0;
+                    else
+                    response.val=1;
+
+                    res.json(response);
+                }
+            })
+        }
+    })
+
+});
 
 module.exports = router;
 

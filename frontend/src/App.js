@@ -22,6 +22,7 @@ import OrderItems from "./components/users/Buyer/OrderItems";
 import Selling from "./components/users/Vendor/delivery";
 import Ratingg from "./components/users/Buyer/rating";
 import Qty from "./components/users/Buyer/Qty";
+import Stats from "./components/users/Vendor/Statistics"
 
 const Layout = () => {
 
@@ -64,6 +65,7 @@ function App() {
         <Route path="/vendor/menu" element={<FoodItems />} />
         <Route path="/vendor/additem" element={<AddItem />} />
         <Route path="/vendor/orders" element={<Selling />} />
+        <Route path="/vendor/stats" element={<Stats />} />
         
       </Routes>
     </BrowserRouter>
