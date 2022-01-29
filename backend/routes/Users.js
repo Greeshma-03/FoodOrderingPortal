@@ -6,11 +6,12 @@ const Buyer = require("../models/Buyer")
 const Vendor = require("../models/Vendor");
 const Food = require("../models/FoodItems");
 const Order = require("../models/Orders");
+const User = require("../models/Users");
 
 // GET request 
 // Getting all the users
 router.get("/", function (req, res) {
-    Order.find(function (err, users) {
+    Vendor.find(function (err, users) {
         if (err) {
             console.log(err);
         } else {
@@ -571,37 +572,57 @@ router.post("/pickorder", function (req, res) {
 });
 
 router.post("/reject", function (req, res) {
-    let response = {
-        val: ""
-    }
-    response.val = 0;
     const id = req.body.id;
 
-    // console.log("The information is:");
-    // console.log(req.body);
-
     Order.findById(id, function (err, users) {
+        let response = {
+            val: ""
+        }
+        response.val = 0;
+
+        var money = parseInt(users.price);
+        var qty = parseInt(users.qty);
+
+        var refund = parseInt(money * qty);
+
         if (err) {
-            response.val = 0;
+            console.log(err);
         } else {
             console.log(users);
 
             if (users.status == "placed") {
                 users.status = "rejected";
-            }
 
+            }
             users.save()
                 .then(User => {
                     response.val = 1;
-                    res.status(200).json(response);
                 })
                 .catch(err => {
                     console.log("Error occured while saving!!");
-                    res.status(400).send(err);
+                    console.log(err);
                 });
         }
-    })
 
+        Buyer.findOne({ email: users.bemail }, function (err, uses) {
+            if (err) {
+                console.log(err);
+            } else {
+                
+                uses.money = parseInt(uses.money + refund);
+                console.log(uses.money);
+                uses.save()
+                    .then(User => {
+                        response.val = 2;
+                    })
+                    .catch(err => {
+                        console.log("Error while arefunding to buyer!!");
+                        console.log(err);
+                    });
+            }
+        })
+        res.json(response);
+    })
 });
 
 router.post("/rate", function (req, res) {

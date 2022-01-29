@@ -19,8 +19,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Navbar from "../templates/Navbar";
-
 
 const UsersList = (props) => {
   const [users, setUsers] = useState([]);
@@ -62,11 +60,6 @@ const UsersList = (props) => {
 
   return (
     <div>
-      <div>
-        <Navbar />
-        <div className="container">
-        </div>
-      </div>
       <Grid container>
         <Grid item xs={12} md={3} lg={3}>
           <List component="nav" aria-label="mailbox folders">
@@ -90,7 +83,7 @@ const UsersList = (props) => {
                   </InputAdornment>
                 ),
               }}
-            // onChange={customFunction}
+              // onChange={customFunction}
             />
           </List>
         </Grid>
@@ -143,18 +136,24 @@ const UsersList = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell> Sr No.</TableCell>
+                  <TableCell>
+                    {" "}
+                    <Button onClick={sortChange}>
+                      {sortName ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                    </Button>
+                    Date
+                  </TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Password</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-              {users.map((user, ind) => (
+                {users.map((user, ind) => (
                   <TableRow key={ind}>
                     <TableCell>{ind}</TableCell>
-                    <TableCell>{user.vemail}</TableCell>
-                    <TableCell>{user.bemail}</TableCell>
-                    <TableCell>{user.item}</TableCell>
+                    <TableCell>{user.date}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

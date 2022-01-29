@@ -62,7 +62,7 @@ const Items = (props) => {
             .then(response => {
                 if (response.data.val === 1)
                     alert("Currently Available!!");
-                else if(response.data.val===0)
+                else if (response.data.val === 0)
                     alert("Not available!!");
 
             })
@@ -121,19 +121,18 @@ const Items = (props) => {
                                             <TableCell>{ind + 1}</TableCell>
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>{user.price}</TableCell>
-                                            <TableCell>{user.rating}</TableCell>
-                                            <TableCell>{user.peep}</TableCell>
-
-                                            {user.rating == 0 || user.peep == 0 ?
+                                            {user.rating === 0 || user.peep === 0 ?
                                                 <TableCell>0</TableCell>
                                                 :
                                                 <>
                                                     <TableCell>{Math.floor(user.rating / user.peep)}</TableCell>
-                                                    <TableCell>{user.veg}</TableCell>
-                                                    <TableCell>{user.shop}</TableCell>
-                                                    <TableCell>{user.email}</TableCell>
+
                                                 </>
                                             }
+                                            <TableCell>{user.veg}</TableCell>
+                                            <TableCell>{user.shop}</TableCell>
+                                            <TableCell>{user.email}</TableCell>
+
 
                                             <Button onClick={() => onSubmitAvailable(user._id)}>Check Availabitliy  </Button>
 

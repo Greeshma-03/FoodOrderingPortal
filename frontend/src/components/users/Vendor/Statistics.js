@@ -89,6 +89,8 @@ const Stats = (props) => {
                     </Grid>
                 <h2>placed-{placed}</h2>
                 <h2>completed-{completed}</h2>
+                <h2>pending-{pending}</h2>
+                <h2>rejected-{rejected}</h2>
             </div>
         </div >
 

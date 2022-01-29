@@ -86,10 +86,12 @@ const Selling = (props) => {
         axios
             .post("http://localhost:4000/user/reject", nuser)
             .then(response => {
-                if (response.data.val === 1)
+                if (response.data.val === 1 || response.data.val === 2)
                     alert("Rejected Successfully!!");
-                else
+                else{
+                    console.log(response.data.val);
                     alert("Failed to reject Order!!");
+                }
 
             })
             .catch((error) => {
