@@ -94,7 +94,7 @@ const VProfile = () => {
                 console.log(response.data);
                 //failure
                 if (response.data.val === 0) {
-                    alert("Failure!!!");
+                    alert("Incorrect data enetered");
                 }
                 //success
                 else {
@@ -119,7 +119,7 @@ const VProfile = () => {
                 <h2>Shop Name-{users.shop}</h2>
                 <h2>Contact No.-{users.contactno}</h2>
                 <h2>Canteen Timings: {users.canteenopen}-{users.canteenclose}</h2>
-
+                <h2>Working orders {users.working}</h2>
             </div >
 
             <Grid container align={"center"} spacing={2}>

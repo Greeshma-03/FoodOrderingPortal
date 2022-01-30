@@ -7,6 +7,7 @@ const Vendor = require("../models/Vendor");
 const Food = require("../models/FoodItems");
 const Order = require("../models/Orders");
 const User = require("../models/Users");
+const Fav = require("../models/Fav");
 
 // GET request 
 // Getting all the users
@@ -212,8 +213,10 @@ router.post("/vedit", (req, res) => {
     let response = {
         val: ""
     };
+
     Vendor.findOne({ email: email }).then(user => {
         if (user) {
+
             user.name = req.body.name;
             user.contactno = req.body.contact;
             user.shop = req.body.shop;
@@ -489,10 +492,16 @@ router.post("/addorder", function (req, res) {
 
 router.post("/stageedit", function (req, res) {
     let response = {
-        val: ""
+        val: "",
+        pop: ""
     }
     response.val = 0;
+    response.pop = 0;
+
+    var pop = 0;
+
     const id = req.body.id;
+    const email = req.body.email;
 
     console.log("The information is:");
     console.log(req.body);
@@ -504,36 +513,63 @@ router.post("/stageedit", function (req, res) {
         pick: "readyforpickup"
     }
 
-    Order.findById(id, function (err, users) {
+    Vendor.findOne({ email: email }, function (err, userrs) {
         if (err) {
-            response.val = 0;
-            console.log("helllllooooo");
             console.log(err);
-        } else {
-            console.log(users);
+        }
+        else {
+            if (userrs) {
+                Order.findById(id, function (err, users) {
+                    if (err) {
+                        response.val = 0;
+                        console.log("helllllooooo");
+                        console.log(err);
+                    } else {
+                        if (users.status == use.placed) {
+                            if (userrs.working < 10) {
+                                users.status = use.accepted;
+                                userrs.working = 1 + userrs.working;
+                            }
+                            else {
+                                pop = 1;
+                            }
+                        }
+                        else if (users.status == use.accepted) {
+                            users.status = use.cooking;
+                        }
+                        else if (users.status === use.cooking) {
+                            users.status = use.pick;
+                            userrs.working = userrs.working - 1;
+                        }
+                        console.log("before death.....");
+                        console.log(users);
 
-            if (users.status == use.placed) {
-                users.status = use.accepted;
-            }
-            else if (users.status == use.accepted)
-                users.status = use.cooking;
-            else if (users.status === use.cooking)
-                users.status = use.pick;
-            console.log("before death.....");
-            console.log(users);
+                        users.save()
+                            .then(User => {
+                            })
+                            .catch(err => {
+                                console.log("Error occured while saving!!");
+                                res.status(400).send(err);
+                            });
 
-            users.save()
-                .then(User => {
-                    response.val = 1;
-                    res.status(200).json(response);
+                        userrs.save()
+                            .then(User => {
+                                response.pop = pop;
+                                response.val = 1;
+                                console.log(response);
+                                res.status(200).json(response);
+                            })
+                            .catch(err => {
+                                console.log("Error occured while saving!!");
+                                res.status(400).send(err);
+                            });
+                    }
                 })
-                .catch(err => {
-                    console.log("Error occured while saving!!");
-                    res.status(400).send(err);
-                });
-            console.log(response);
+            }
         }
     })
+
+
 
 });
 
@@ -596,7 +632,6 @@ router.post("/reject", function (req, res) {
             }
             users.save()
                 .then(User => {
-                    response.val = 1;
                 })
                 .catch(err => {
                     console.log("Error occured while saving!!");
@@ -608,12 +643,12 @@ router.post("/reject", function (req, res) {
             if (err) {
                 console.log(err);
             } else {
-                
                 uses.money = parseInt(uses.money + refund);
                 console.log(uses.money);
                 uses.save()
                     .then(User => {
                         response.val = 2;
+                        res.json(response);
                     })
                     .catch(err => {
                         console.log("Error while arefunding to buyer!!");
@@ -621,9 +656,9 @@ router.post("/reject", function (req, res) {
                     });
             }
         })
-        res.json(response);
     })
 });
+
 
 router.post("/rate", function (req, res) {
     let response = {
@@ -690,29 +725,59 @@ router.post("/addfav", function (req, res) {
     let response = {
         val: ""
     }
+
     response.val = 0;
 
-    Buyer.findOne({ email: buyeremail }, function (err, users) {
-        if (err) {
-            console.log(err);
-        } else {
-            // users.fav.app
-            console.log(users);
-            users.fav.push(id);
-            users.save()
-                .then(User => {
-                    response.val = 1;
-                    res.status(200).json(response);
-                })
-                .catch(err => {
-                    console.log("Error while adding to favourites tab of buyer!!");
-                    res.status(400).send(err);
-                });
-            //how to add array of strings..?
+
+    Food.findById(id, function (err, userrs) {
+        if (userrs) {
+            const rating = parseInt(userrs.rating);
+            const peep = parseInt(userrs.peep);
+            console.log(userrs);
+            var rattte = 0;
+            if (rating == 0 || peep == 0)
+                rattte = 0;
+            else
+                rattte = (rating / peep).toFixed(2);
+
+            Fav.findOne({ bemail: buyeremail, id: id }, function (err, users) {
+                if (!users) {
+                    //not added to favourites yet
+                    const newUser = new Fav({
+                        name: userrs.name,
+                        bemail: buyeremail,
+                        vemail: userrs.email,
+                        rating: rattte,
+                        price: userrs.price,
+                        id: id
+                    });
+
+                    newUser.save()
+                        .then(User => {
+                            response.val = 1;
+                            res.status(200).json(response);
+                        })
+                        .catch(err => {
+                            console.log("Error while adding to favourites tab of buyer!!");
+                            res.status(400).send(err);
+                        });
+                }
+                else {
+                    response.val = 2;
+                    res.json(response);
+                }
+            })
+
+
+        }
+        else {
+            response.val = -1;
+            res.json(response);
         }
     })
+    //how to add array of strings..?
+})
 
-});
 
 router.post("/favlist", function (req, res) {
     const buyeremail = req.body.bemail;
@@ -721,13 +786,13 @@ router.post("/favlist", function (req, res) {
     }
     response.val = 0;
 
-    Buyer.findOne({ email: buyeremail }, function (err, users) {
+    Fav.find({ bemail: buyeremail }, function (err, users) {
         if (err) {
             console.log(err);
         } else {
             // users.fav.app
             console.log("List of Favourites is..")
-            console.log(users.fav);
+            console.log(users);
             res.json(users);
         }
     })
@@ -786,42 +851,49 @@ router.post("/foodavail", function (req, res) {
         } else {
             console.log("the user is...")
             console.log(users);
-            const email = users.email;
-            Vendor.findOne({ email: email }, function (err, use) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(use);
-                    var startTime = use.canteenopen;
-                    var endTime = use.canteenclose;
+            if (users) {
+                const email = users.email;
+                Vendor.findOne({ email: email }, function (err, use) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(use);
+                        nowtime = new Date()
 
-                    currentDate = new Date()
+                        var staart = use.canteenopen;
+                        var eeend = use.canteenclose;
+                        oooopen = new Date(nowtime.getTime());
+                        oooopen.setHours(staart.split(":")[0]);
+                        oooopen.setMinutes(staart.split(":")[1]);
+                        oooopen.setSeconds(staart.split(":")[2]);
 
-                    startDate = new Date(currentDate.getTime());
-                    startDate.setHours(startTime.split(":")[0]);
-                    startDate.setMinutes(startTime.split(":")[1]);
-                    startDate.setSeconds(startTime.split(":")[2]);
+                        clooose = new Date(nowtime.getTime());
+                        clooose.setHours(eeend.split(":")[0]);
+                        clooose.setMinutes(eeend.split(":")[1]);
+                        clooose.setSeconds(eeend.split(":")[2]);
 
-                    endDate = new Date(currentDate.getTime());
-                    endDate.setHours(endTime.split(":")[0]);
-                    endDate.setMinutes(endTime.split(":")[1]);
-                    endDate.setSeconds(endTime.split(":")[2]);
+                        console.log(staart)
+                        console.log(nowtime);
 
-                    console.log(startTime)
-                    console.log(startDate);
-                    console.log(currentDate);
+                        Isvalid = oooopen < nowtime && clooose > nowtime;
+                        console.log("Validation answer is..")
+                        console.log(Isvalid);
+                        if (Isvalid == false) {
+                            response.val = 0;
+                            res.json(response);
+                        }
+                        else {
+                            response.val = 1;
+                            res.json(response);
+                        }
 
-                    valid = startDate < currentDate && endDate > currentDate;
-                    console.log("Validation answer is..")
-                    console.log(valid);
-                    if (valid == false)
-                        response.val = 0;
-                    else
-                        response.val = 1;
-
-                    res.json(response);
-                }
-            })
+                    }
+                })
+            }
+            else{
+                response.val=0;
+                res.json(response);
+            }
         }
     })
 

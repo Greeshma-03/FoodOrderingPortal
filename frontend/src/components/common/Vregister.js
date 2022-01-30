@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 
 
 const VReg = (props) => {
@@ -22,7 +23,7 @@ const VReg = (props) => {
     const [canteenopen, setcanteenopen] = useState("");
     const [canteenclose, setcanteenclose] = useState("");
     const [pw, setpw] = useState("");
-    
+
     const onChangename = (event) => {
         setname(event.target.value);
     };
@@ -61,19 +62,19 @@ const VReg = (props) => {
         setpw("");
     };
 
-    
+
     var present = 0;
     const onSubmit = (event) => {
         event.preventDefault();
 
         const newUser = {
             name: name,
-            shop:shop,
+            shop: shop,
             email: email,
             contactno: contact,
-            canteenopen:canteenopen,
-            canteenclose:canteenclose,
-            password:pw
+            canteenopen: canteenopen,
+            canteenclose: canteenclose,
+            password: pw
         };
 
         axios
@@ -86,7 +87,7 @@ const VReg = (props) => {
                 }
                 //success
                 else {
-                    alert("Created "+response.data.name);              
+                    alert("Created " + response.data.name);
                     present = 1;
                 }
 
@@ -95,7 +96,7 @@ const VReg = (props) => {
         resetInputs();
     };
 
-    
+
     return (
         <Grid container align={"center"} spacing={2}>
             <Grid item xs={12}>
@@ -130,23 +131,100 @@ const VReg = (props) => {
                     onChange={onChangecontact}
                 />
             </Grid>
-            <Grid item xs={12}>
-                <TextField
-                    label="Opening time(in 24-hrs)"
-                    variant="outlined"
-                    value={canteenopen}
-                    onChange={onChangeopen}
-                />
-            </Grid>
+            <br>
+            </br>
+            <br />
+            <div className="container" style={{ textAlign: "center" }}>
 
-            <Grid item xs={12}>
-                <TextField
-                    label="Closing time(in 24-hrs)"
-                    variant="outlined"
-                    value={canteenclose}
-                    onChange={onChangeclose}
-                />
-            </Grid>            
+
+                <Grid container align={"center"} item xs={1} align="center">
+
+                    <Box container align={"center"} align="center" sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Open</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={canteenopen}
+                                label="Open"
+                                onChange={onChangeopen}
+                            >
+                                <MenuItem value={1}>0</MenuItem>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+                                <MenuItem value={8}>8</MenuItem>
+                                <MenuItem value={9}>9</MenuItem>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={11}>11</MenuItem>
+                                <MenuItem value={12}>12</MenuItem>
+                                <MenuItem value={13}>13</MenuItem>
+                                <MenuItem value={14}>14</MenuItem>
+                                <MenuItem value={15}>15</MenuItem>
+                                <MenuItem value={16}>16</MenuItem>
+                                <MenuItem value={17}>17</MenuItem>
+                                <MenuItem value={18}>18</MenuItem>
+                                <MenuItem value={19}>19</MenuItem>
+                                <MenuItem value={20}>20</MenuItem>
+                                <MenuItem value={21}>21</MenuItem>
+                                <MenuItem value={22}>22</MenuItem>
+                                <MenuItem value={23}>23</MenuItem>
+
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </Grid>
+                 <br/>
+                 <br/>
+                <Grid container align={"center"} item xs={1} align="center">
+
+                    <Box container align={"center"} align="center" sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Close</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={canteenclose}
+                                label="Close"
+                                onChange={onChangeclose}
+                            >
+                                <MenuItem value={1}>0</MenuItem>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+                                <MenuItem value={8}>8</MenuItem>
+                                <MenuItem value={9}>9</MenuItem>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={11}>11</MenuItem>
+                                <MenuItem value={12}>12</MenuItem>
+                                <MenuItem value={13}>13</MenuItem>
+                                <MenuItem value={14}>14</MenuItem>
+                                <MenuItem value={15}>15</MenuItem>
+                                <MenuItem value={16}>16</MenuItem>
+                                <MenuItem value={17}>17</MenuItem>
+                                <MenuItem value={18}>18</MenuItem>
+                                <MenuItem value={19}>19</MenuItem>
+                                <MenuItem value={20}>20</MenuItem>
+                                <MenuItem value={21}>21</MenuItem>
+                                <MenuItem value={22}>22</MenuItem>
+                                <MenuItem value={23}>23</MenuItem>
+
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </Grid>
+
+                <br />
+            </div>
+
             <Grid item xs={12}>
                 <TextField
                     label="password"

@@ -62,8 +62,9 @@ const Items = (props) => {
             .then(response => {
                 if (response.data.val === 1)
                     alert("Currently Available!!");
-                else if (response.data.val === 0)
+                else if (response.data.val === 0) {
                     alert("Not available!!");
+                }
 
             })
             .catch((error) => {
@@ -75,7 +76,7 @@ const Items = (props) => {
     const onSubmitFav = (id) => {
         const nuser = {
             itemid: id,
-            bemail: email
+            bemail: email,
         }
 
         axios
@@ -83,8 +84,11 @@ const Items = (props) => {
             .then(response => {
                 if (response.data.val === 1)
                     alert("Added to favourites!!");
-                else
+                else if (response.data.val === 2)
+                    alert("Already added to favourites!!");
+                else {
                     alert("Failed to add to favourites!!");
+                }
 
             })
             .catch((error) => {
@@ -134,7 +138,7 @@ const Items = (props) => {
                                             <TableCell>{user.email}</TableCell>
 
 
-                                            <Button onClick={() => onSubmitAvailable(user._id)}>Check Availabitliy  </Button>
+                                            <Button color="secondary" onClick={() => onSubmitAvailable(user._id)}>Check Availabitliy</Button>
 
                                             <TableCell><Grid item xs={12}>
                                                 <Button variant="contained" color="success" onClick={() => onSubmitOrder(user._id)}>

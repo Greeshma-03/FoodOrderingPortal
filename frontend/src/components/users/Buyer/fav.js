@@ -35,8 +35,8 @@ const Favs = (props) => {
         axios
             .post("http://localhost:4000/user/favlist", nuser)
             .then((response) => {
-                setUsers(response.data.fav);
-                console.log(response.data.fav);
+                setUsers(response.data);
+                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -58,6 +58,9 @@ const Favs = (props) => {
                                     <TableRow>
                                         <TableCell> Sr No.</TableCell>
                                         <TableCell>Item Name</TableCell>
+                                        <TableCell>Price</TableCell>
+                                        <TableCell>Rating</TableCell>
+                                        <TableCell>Vendor Email</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -65,7 +68,10 @@ const Favs = (props) => {
                                         
                                         <TableRow key={ind}>
                                             <TableCell>{ind + 1}</TableCell>
-                                            <TableCell>{user}</TableCell>
+                                            <TableCell>{user.name}</TableCell>
+                                            <TableCell>{user.price}</TableCell>
+                                            <TableCell>{user.rating}</TableCell>
+                                            <TableCell>{user.vemail}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

@@ -55,7 +55,8 @@ const Selling = (props) => {
     const onSubmitStage = (id) => {
 
         const nuser = {
-            id: id
+            id: id,
+            email: email
         };
 
         console.log(nuser);
@@ -63,16 +64,17 @@ const Selling = (props) => {
         axios
             .post("http://localhost:4000/user/stageedit", nuser)
             .then(response => {
-                if (response.data.val === 1)
+                if (response.data.pop === 1)
+                    alert("Cookers are busy!!\nAccept later");
+                else if (response.data.val === 1)
                     alert("Order Edited Successfully!!");
                 else
                     alert("Failed to edit Order!!");
-
+                window.location.reload(false);
             })
             .catch((error) => {
                 console.log(error);
             });
-        window.location.reload(false);
     };
 
     const onSubmitreject = (id) => {
@@ -88,16 +90,16 @@ const Selling = (props) => {
             .then(response => {
                 if (response.data.val === 1 || response.data.val === 2)
                     alert("Rejected Successfully!!");
-                else{
+                else {
                     console.log(response.data.val);
                     alert("Failed to reject Order!!");
                 }
+                window.location.reload(false);
 
             })
             .catch((error) => {
                 console.log(error);
             });
-        window.location.reload(false);
     };
 
     const onChangeqty = (event, ind) => {

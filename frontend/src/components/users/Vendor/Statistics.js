@@ -52,41 +52,41 @@ const Stats = (props) => {
         <div>
             <VendorNavbar />
             <div className="container">
-                    <Grid item xs={12} md={9} lg={9}>
-                        <Paper>
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
+                <Grid item xs={12} md={9} lg={9}>
+                    <Paper>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
 
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {orderusers.map((user, ind) => (
-                                        <>
-                                            {(() => {
-                                                if (user.status === "placed") {
-                                                    placed = placed + 1;
-                                                    console.log(placed);
-                                                }
-                                                else if (user.status === "completed") {
-                                                    completed = completed + 1;
-                                                    console.log(completed)
-                                                }
-                                                else if (user.status === "rejected") {
-                                                    rejected = rejected + 1;
-                                                }
-                                                else{
-                                                    pending = 1 + pending;
-                                                }
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {orderusers.map((user, ind) => (
+                                    <>
+                                        {(() => {
+                                            if (user.status === "placed") {
+                                                placed = placed + 1;
+                                                console.log(placed);
                                             }
-                                            )()}
-                                            </>
-                                    ))}
+                                            else if (user.status === "completed") {
+                                                completed = completed + 1;
+                                                console.log(completed)
+                                            }
+                                            else if (user.status === "rejected") {
+                                                rejected = rejected + 1;
+                                            }
+                                            else {
+                                                pending = 1 + pending;
+                                            }
+                                        }
+                                        )()}
+                                    </>
+                                ))}
 
-                                </TableBody>
-                            </Table>
-                        </Paper>
-                    </Grid>
+                            </TableBody>
+                        </Table>
+                    </Paper>
+                </Grid>
                 <h2>placed-{placed}</h2>
                 <h2>completed-{completed}</h2>
                 <h2>pending-{pending}</h2>
