@@ -37,6 +37,10 @@ const OrdersSchema = new Schema({
 	rating:{
 		type:Number,
 		default:0
+	},
+	placed:{
+		type:Date,
+		default:Date.now
 	}
 });
 

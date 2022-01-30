@@ -54,7 +54,6 @@ router.post("/login", (req, res) => {
             }
             else {
                 response.val = 1;
-                // console.log(response);
                 res.status(200).json(response);
 
             }
@@ -380,7 +379,16 @@ router.post("/vorderitems", function (req, res) {
     })
 });
 
-
+router.post("/ufforderitems", function (req, res) {
+    const vemail = req.body.email;
+    Food.find({ email: vemail }, function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    })
+});
 
 router.post("/orderitems", function (req, res) {
     const bemail = req.body.bemail;
@@ -455,7 +463,8 @@ router.post("/addorder", function (req, res) {
                     qty: req.body.qty,
                     shop: req.body.shop,
                     status: req.body.status,
-                    price: req.body.price
+                    price: req.body.price,
+                    placed:Date.now()
                 })
                 newUser.save()
                     .then(User => {
@@ -472,7 +481,7 @@ router.post("/addorder", function (req, res) {
                     .catch(err => {
                         console.log("Error occured while deducting money!!");
                         console.log(err);
-                        res.status(400).send(err);
+                        // res.status(400).send(err);
                     });
                 response.val = 1;
                 res.json(response);

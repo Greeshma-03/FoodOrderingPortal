@@ -62,7 +62,7 @@ const OrderItems = (props) => {
             .post("http://localhost:4000/user/pickorder", nuser)
             .then(response => {
                 if (response.data.val === 1)
-                    alert("Order placed Successfully!!");
+                    alert("Order pickeup Successfully!!");
                 else
                     alert("Failed to place Order!!");
 
@@ -98,7 +98,8 @@ const OrderItems = (props) => {
                                         <TableCell>Vendor email</TableCell>
                                         <TableCell>Shop</TableCell>
                                         <TableCell>Status</TableCell>
-                                        <TableCell>Rating</TableCell>
+                                        <TableCell>Price</TableCell>
+                                        <TableCell>My Rating</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

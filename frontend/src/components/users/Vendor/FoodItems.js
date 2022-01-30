@@ -164,16 +164,24 @@ const FoodItems = (props) => {
                                                     <TableCell>{ind + 1}</TableCell>
                                                     <TableCell> <input value={name} onChange={onChangename} /></TableCell>
                                                     <TableCell><input value={price} onChange={onChangeprice} /></TableCell>
-                                                    <TableCell>{user.rating}</TableCell>
+                                                    {user.rating === 0 || user.peep === 0 ?
+
+                                                        <TableCell>0</TableCell>
+                                                        :
+                                                        <>
+                                                            <TableCell>{(user.rating / user.peep).toFixed(2)}</TableCell>
+
+                                                        </>
+                                                    }
                                                     <TableCell><input value={veg} onChange={onChangeveg} /></TableCell>
                                                     <TableCell><Grid item xs={12}>
-                                                        <Button variant="contained" onClick={() => onSubmitsave(user._id)}>
+                                                        <Button variant="contained" color="success" onClick={() => onSubmitsave(user._id)}>
                                                             Save
                                                         </Button>
                                                     </Grid></TableCell>
                                                     <TableCell>
                                                         <Grid item xs={12}>
-                                                            <Button variant="contained" onClick={onSubmitcancel}>
+                                                            <Button variant="contained" color="error" onClick={onSubmitcancel}>
                                                                 Cancel
                                                             </Button>
                                                         </Grid>
@@ -184,7 +192,15 @@ const FoodItems = (props) => {
                                                     <TableCell>{ind + 1}</TableCell>
                                                     <TableCell>{user.name}</TableCell>
                                                     <TableCell>{user.price}</TableCell>
-                                                    <TableCell>{user.rating}</TableCell>
+                                                    {user.rating === 0 || user.peep === 0 ?
+
+                                                        <TableCell>0</TableCell>
+                                                        :
+                                                        <>
+                                                            <TableCell>{(user.rating / user.peep).toFixed(2)}</TableCell>
+
+                                                        </>
+                                                    }
                                                     <TableCell>{user.veg}</TableCell>
                                                     <TableCell><Grid item xs={12}>
                                                         <Button variant="contained" onClick={() => onSubmitedit(ind, user._id)}>

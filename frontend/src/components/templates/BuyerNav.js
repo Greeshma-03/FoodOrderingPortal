@@ -24,7 +24,7 @@ const BuyerNavbar = () => {
           <Button color="inherit" onClick={() => navigate("/buyer/Profile")}>
             Profile
           </Button>
-          <Button color="inherit" onClick={() => navigate("/buyer/Search_bar")}>
+          <Button color="inherit" onClick={() => navigate("/buyer/search")}>
             Search food Items
           </Button>
           <Button color="inherit" onClick={() => navigate("/buyer/favs")}>

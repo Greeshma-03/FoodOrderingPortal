@@ -104,11 +104,11 @@ const BProfile = () => {
             <BuyerNavbar />
             <div className="container" container-align="center" >
                 <h1>Welcome to the profile page {email}!! </h1>
-                <h2> Username-{users.name}</h2>
-                <h2>Email-{users.email}</h2>
-                <h2>batch-{users.batch}</h2>
-                <h2>age-{users.age}</h2>
-                <h2>MOney-{users.money}</h2>
+                <h2> Username - {users.name}</h2>
+                <h2>Email - {users.email}</h2>
+                <h2>batch - UG-{users.batch}</h2>
+                <h2>age - {users.age}</h2>
+                <h2>Wallet - {users.money}</h2>
 
 
                 <Grid container align={"left"} spacing={2}>

@@ -20,6 +20,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import emailjs from "emailjs-com";
 
 
 const Selling = (props) => {
@@ -52,14 +53,32 @@ const Selling = (props) => {
             });
     }, []);
 
-    const onSubmitStage = (id) => {
+    const onSubmitStage = (id, status,item) => {
 
         const nuser = {
             id: id,
             email: email
         };
-
         console.log(nuser);
+
+        if (status == "placed") {
+
+            var templateParams = {
+                name: 'James',
+                notes: 'Check this out!',
+                to_name: 'nithil99m2@gmail.com',
+                from_name: 'amaranenigreeshma@gmail.com',
+                message: 'Your order '+ item+' got accepted with item-id: ' + id+'',
+                subject:shop
+            };
+
+            emailjs.send('service_fl137g5', 'template_jci7q35', templateParams, 'user_UhVXnLqFJsP3dCqybseRn')
+                .then(function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                }, function (error) {
+                    console.log('FAILED...', error);
+                });
+        }
 
         axios
             .post("http://localhost:4000/user/stageedit", nuser)
@@ -77,13 +96,27 @@ const Selling = (props) => {
             });
     };
 
-    const onSubmitreject = (id) => {
+    const onSubmitreject = (id,item) => {
 
         const nuser = {
             id: id
         };
 
         console.log(nuser);
+        var templateParams = {
+            name: 'James',
+            notes: 'Check this out!',
+            to_name: 'nithil99m2@gmail.com',
+            from_name: 'amaranenigreeshma@gmail.com',
+            message: 'Your order '+item+ ' got rejected with item-id!!'+id
+        };
+
+        emailjs.send('service_fl137g5', 'template_jci7q35', templateParams, 'user_UhVXnLqFJsP3dCqybseRn')
+            .then(function (response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function (error) {
+                console.log('FAILED...', error);
+            });
 
         axios
             .post("http://localhost:4000/user/reject", nuser)
@@ -115,7 +148,9 @@ const Selling = (props) => {
                 <VendorNavbar />
 
                 <div className="container">
-
+                <div className="container" style={{ textAlign: "center" }}>
+                    <h1>Dashboard to View order items</h1>
+                </div>
                     <Grid item xs={12} md={9} lg={9}>
                         <Paper>
                             <Table size="small">
@@ -124,7 +159,8 @@ const Selling = (props) => {
                                         <TableCell> Sr No.</TableCell>
                                         <TableCell>Item Name</TableCell>
                                         <TableCell>Item Qty</TableCell>
-                                        <TableCell>Vendor email</TableCell>
+                                        <TableCell>Placed Time</TableCell>
+                                        <TableCell>Buyer email</TableCell>
                                         <TableCell>Shop</TableCell>
                                         <TableCell>Status</TableCell>
                                     </TableRow>
@@ -136,19 +172,20 @@ const Selling = (props) => {
                                             <TableCell>{ind + 1}</TableCell>
                                             <TableCell>{user.item}</TableCell>
                                             <TableCell>{user.qty}</TableCell>
-                                            <TableCell>{user.vemail}</TableCell>
+                                            <TableCell>{user.placed}</TableCell>
+                                            <TableCell>{user.bemail}</TableCell>
                                             <TableCell>{user.shop}</TableCell>
                                             <TableCell>{user.status}</TableCell>
                                             {user.status == "placed" || user.status == "accepted" || user.status == "cooking" ?
                                                 <>
                                                     < TableCell > <Grid item xs={12}>
-                                                        <Button variant="contained" color="success" onClick={() => onSubmitStage(user._id)}>
+                                                        <Button variant="contained" color="success" onClick={() => onSubmitStage(user._id, user.status,user.item)}>
                                                             Move to Next Stage
                                                         </Button>
                                                     </Grid></TableCell>
                                                     {user.status == "placed" &&
                                                         < TableCell > <Grid item xs={12}>
-                                                            <Button variant="contained" color="error" onClick={() => onSubmitreject(user._id)}>
+                                                            <Button variant="contained" color="error" onClick={() => onSubmitreject(user._id,user.item)}>
                                                                 Reject
                                                             </Button>
                                                         </Grid></TableCell>

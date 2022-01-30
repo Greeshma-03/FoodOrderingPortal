@@ -11,8 +11,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate } from "react-router-dom";
 import BuyerNavbar from "../../templates/BuyerNav";
 import Box from '@mui/material/Box';
@@ -20,6 +18,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Divider from "@mui/material/Divider";
+import Autocomplete from "@mui/material/Autocomplete";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+
 
 
 const Items = (props) => {
@@ -101,9 +104,7 @@ const Items = (props) => {
         <div>
             <div>
                 <BuyerNavbar />
-
-                <div className="container">
-
+                <div className="container">                
                     <Grid item xs={12} md={9} lg={9}>
                         <Paper>
                             <Table size="small">
@@ -129,7 +130,7 @@ const Items = (props) => {
                                                 <TableCell>0</TableCell>
                                                 :
                                                 <>
-                                                    <TableCell>{Math.floor(user.rating / user.peep)}</TableCell>
+                                                    <TableCell>{(user.rating / user.peep).toFixed(2)}</TableCell>
 
                                                 </>
                                             }
@@ -139,6 +140,7 @@ const Items = (props) => {
 
 
                                             <Button color="secondary" onClick={() => onSubmitAvailable(user._id)}>Check Availabitliy</Button>
+
 
                                             <TableCell><Grid item xs={12}>
                                                 <Button variant="contained" color="success" onClick={() => onSubmitOrder(user._id)}>
